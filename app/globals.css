@@ -1,26 +1,402 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
 
+/* ── Design Tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-bg-dark: #0a0a0a;
+  --color-bg-mid: #1a1a1a;
+  --color-bg-light: #F5F4EF;
+  --color-accent: #D6DE23;
+  --color-accent-dark: #b8c61a;
+  --color-white: #ffffff;
+  --color-text-muted: #9ca3af;
+  --color-card-bg: #ffffff;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --font-sans: "Mona Sans Variable", "Mona Sans", ui-sans-serif, system-ui, sans-serif;
+  --nav-height: 72px;
+
+  /* ── Perfect Fourth Fluid Type Scale (ratio 1.333) ──────────────────────────
+   *  Viewport range: 320px → 1440px
+   *  Formula: clamp(minSize, slope*vw + intercept, maxSize)
+   *  ──────────────────────────────────────────────────────────────────────── */
+
+  /* H1  ~38px → ~90px  (P4 × 5) */
+  --type-h1: clamp(2.375rem, 4.643vw + 1.446rem, 5.625rem);
+
+  /* H2  ~28px → ~56px  (P4 × 4) */
+  --type-h2: clamp(1.778rem, 2.483vw + 1.281rem, 3.516rem);
+
+  /* H3  ~21px → ~42px  (P4 × 3) */
+  --type-h3: clamp(1.333rem, 1.862vw + 0.961rem, 2.637rem);
+
+  /* H4  ~16px → ~31px  (P4 × 2) */
+  --type-h4: clamp(1rem, 1.396vw + 0.721rem, 1.978rem);
+
+  /* H5  ~14px → ~21px  (P4 × 1) */
+  --type-h5: clamp(0.875rem, 0.654vw + 0.744rem, 1.333rem);
+
+  /* H6  ~12px → ~16px  (P4 × 0) */
+  --type-h6: clamp(0.75rem, 0.357vw + 0.679rem, 1rem);
+
+  /* Lead ~17px → ~21px */
+  --type-lead: clamp(1.0625rem, 0.357vw + 0.991rem, 1.3125rem);
+
+  /* Body  ~15px → ~18px */
+  --type-body: clamp(0.9375rem, 0.268vw + 0.884rem, 1.125rem);
+
+  /* Small / Caption ~12px → ~14px */
+  --type-small: clamp(0.75rem, 0.179vw + 0.714rem, 0.875rem);
+
+  /* Label / Overline fixed ~11px → ~12px */
+  --type-label: clamp(0.6875rem, 0.089vw + 0.669rem, 0.75rem);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ── Reset ── */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-bg-dark);
+    color: var(--color-white);
+    font-family: var(--font-sans);
+    font-size: var(--type-body);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────────
+   TYPOGRAPHY CLASSES
+   Used by components/ui/typography.jsx
+   ──────────────────────────────────────────────────────────────────────────── */
+
+  /* Headings share display traits */
+  .type-h1,
+  .type-h2,
+  .type-h3,
+  .type-h4,
+  .type-h5,
+  .type-h6 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    font-variation-settings: "wdth" 125, "wght" 500;
+  }
+
+  .type-h1 {
+    font-size: var(--type-h1);
+  }
+
+  .type-h2 {
+    font-size: var(--type-h2);
+  }
+
+  .type-h3 {
+    font-size: var(--type-h3);
+  }
+
+  .type-h4 {
+    font-size: var(--type-h4);
+    font-weight: 800;
+    font-variation-settings: "wdth" 110, "wght" 800;
+  }
+
+  .type-h5 {
+    font-size: var(--type-h5);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    font-variation-settings: "wdth" 100, "wght" 700;
+  }
+
+  .type-h6 {
+    font-size: var(--type-h6);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    font-variation-settings: "wdth" 100, "wght" 700;
+  }
+
+  /* Body text */
+  .type-lead {
+    font-size: var(--type-lead);
+    font-weight: 400;
+    line-height: 1.7;
+    font-variation-settings: "wght" 400;
+  }
+
+  .type-p {
+    font-size: var(--type-body);
+    font-weight: 400;
+    line-height: 1.7;
+    font-variation-settings: "wght" 400;
+  }
+
+  .type-small {
+    font-size: var(--type-small);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .type-span {
+    /* Inherits parent font-size by default */
+    font-size: inherit;
+  }
+
+  /* Overline / badge labels */
+  .type-label {
+    font-size: var(--type-label);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-variation-settings: "wght" 600;
+  }
+
+  /* Tiny captions */
+  .type-caption {
+    font-size: var(--type-small);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Accent color helpers ── */
+  .accent {
+    color: var(--color-accent);
+  }
+
+  .accent-bg {
+    background: var(--color-accent);
+  }
+
+  /* ── Container ── */
+  .container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  @media (min-width: 1280px) {
+    .container {
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-accent);
+    color: #000;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: var(--type-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 13px 26px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+    white-space: nowrap;
+    font-variation-settings: "wdth" 110, "wght" 800;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-dark);
+    transform: translateY(-1px);
+  }
+
+  .btn-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #000;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: var(--type-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+    font-variation-settings: "wdth" 110, "wght" 800;
+  }
+
+  .btn-dark:hover {
+    background: #1a1a1a;
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: var(--type-label);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    font-variation-settings: "wdth" 100, "wght" 700;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--color-accent);
+    background: rgba(214, 222, 35, 0.08);
+  }
+
+  /* ── Navbar ── */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── Section spacing ── */
+  .section {
+    padding: 96px 0;
+  }
+
+  .section-sm {
+    padding: 64px 0;
+  }
+
+  /* ── Section label (legacy alias) ── */
+  .section-label {
+    font-size: var(--type-label);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Product card ── */
+  .product-card {
+    background: var(--color-card-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #111;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in-up {
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  /* ── Hero section – aspect-ratio az SVG arányai alapján ── */
+  .hero-section {
+    /* 375 × 1015.49 */
+    aspect-ratio: 375 / 1015.49;
+    width: 100%;
+    max-height: 70vh;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      /* 768 × 1010.33 */
+      aspect-ratio: 768 / 1010.33;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-section {
+      /* 1024 × 1005.16 */
+      aspect-ratio: 1024 / 1005.16;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .hero-section {
+      /* 1280 × 1000 */
+      aspect-ratio: 1280 / 1000;
+    }
+  }
+
+  @media (min-width: 1920px) {
+    .hero-section {
+      /* 1920 × 800 */
+      aspect-ratio: 1920 / 800;
+    }
+  }
+
+
+  .photo-strip-item img {
+    transition: transform 0.4s ease;
+  }
+
+  .photo-strip-item:hover img {
+    transform: scale(1.05);
+  }
 }

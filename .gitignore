@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ── Lokális médiafájlok (ne kerüljenek a repóba) ──
+Képek/
+
+# BP2 referencia mappák
+BP2 2. PRODUCTS RENDERS AND DIMENSIONS/
+BP2 3. REFERENCE PHOTOS & MOVIES/
