@@ -9,42 +9,25 @@ export default function USPBanner() {
   ];
 
   return (
-    <section className="bg-cream py-20 overflow-hidden">
-      <div className="container flex items-center justify-between gap-12 flex-wrap">
-
+    <section className="flex items-center bg-transparent min-h-[70vh] px-8 relative">
+      <div className="flex lg:flex-row flex-col h-full">
         {/* Left */}
-        <div className="flex-[1_1_380px] max-w-[520px]">
-          <H2 className="text-black leading-[1.05] mb-4">
-            Minőségi bádogos<br />termékek<br />
-            <span className="text-accent-dark">a legjobb árakon</span>
-          </H2>
-
-          <div className="flex gap-8 mt-10 flex-wrap">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <p
-                  className="font-black text-black leading-none mb-1"
-                  style={{ fontSize: "var(--type-h3)", fontVariationSettings: '"wdth" 125, "wght" 900' }}
-                >
-                  {stat.num}
-                </p>
-                <Label className="text-black/45">{stat.label}</Label>
-              </div>
-            ))}
-          </div>
+        <div className="lg:w-1/2 w-full z-1">
+          <h1 className="type-h1 text-left">
+            <span className="text-cream">Minőségi bádogos termékek</span>
+            <br />
+            <span className="text-black">a legjobb árakon</span>
+          </h1>
         </div>
 
         {/* Right */}
-        <div className="flex-[1_1_300px] flex items-center justify-end relative">
-          <Image
-            src="/fk-creative-1.webp"
-            alt="FK logó isometrikus"
-            width={520}
-            height={420}
-            className="object-contain max-w-full"
-            priority
-          />
-        </div>
+        <Image
+          src="/fk-creative-1.webp"
+          alt="FK Tető"
+          width={2000}
+          height={2000}
+          className="absolute top-1/2 -translate-y-1/2 -right-1/5 w-3/4 z-0"
+        />
       </div>
     </section>
   );

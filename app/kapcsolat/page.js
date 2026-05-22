@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 
-export const metadata = undefined; // client component page
-
 export default function KapcsolatPage() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [sent, setSent] = useState(false);

@@ -163,7 +163,7 @@ export default function RolunkPage() {
                 >
                   {s.num}
                   {s.unit && (
-                    <span style={{ color: "var(--color-accent-dark)" }}>
+                    <span style={{ color: "var(--color-accent)" }}>
                       {" "}{s.unit}
                     </span>
                   )}

@@ -2,6 +2,7 @@ import "@fontsource-variable/mona-sans";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
 import ConditionalBodyPadding from "@/components/ConditionalBodyPadding";
 import Footer from "@/components/Footer";
+import Preloader from "@/components/shared/Preloader";
 import "./globals.css";
 
 export const metadata = {
@@ -17,11 +18,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="hu">
+    <html lang="hu" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(sessionStorage.getItem("preloader_run")) document.documentElement.classList.add("preloader-finished");`,
+          }}
+        />
+      </head>
       <body>
+        <Preloader />
         <ConditionalNavbar />
         <ConditionalBodyPadding />
-        <main>{children}</main>
+        <main className="bg-black-mid">{children}</main>
         <Footer />
       </body>
     </html>
