@@ -2,81 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
 import { H5, Small, Label, Span } from "@/components/ui/typography";
 
-const PRODUCT_TILE_SHAPE_URL = "/svg/ProductTileShape.svg";
-
-function useSvgPath(url, fallbackViewBox = "0 0 800 720") {
-  const [shape, setShape] = useState({
-    loaded: false,
-    path: "",
-    viewBox: fallbackViewBox,
-  });
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function loadShape() {
-      try {
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error(`Nem sikerült betölteni: ${url}`);
-        }
-
-        const svgText = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(svgText, "image/svg+xml");
-
-        const svg = doc.querySelector("svg");
-        const path = doc.querySelector("path[d]");
-
-        const viewBox = svg?.getAttribute("viewBox") || fallbackViewBox;
-        const d = path?.getAttribute("d");
-
-        if (!d) {
-          throw new Error("Az SVG-ben nem található path d attribútum.");
-        }
-
-        if (isMounted) {
-          setShape({
-            loaded: true,
-            path: d,
-            viewBox,
-          });
-        }
-      } catch (error) {
-        console.error("ProductTileShape.svg betöltési hiba:", error);
-
-        if (isMounted) {
-          setShape({
-            loaded: false,
-            path: "",
-            viewBox: fallbackViewBox,
-          });
-        }
-      }
-    }
-
-    loadShape();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [url, fallbackViewBox]);
-
-  return shape;
-}
+/**
+ * Bottom corner shape — extracted from ProductTileBottom.svg
+ * viewBox: 0 0 51.92 33.07 — just the diagonal corner element
+ */
 
 export default function ProductCard({ product }) {
-  const shape = useSvgPath(PRODUCT_TILE_SHAPE_URL);
-
-  const clipId = useMemo(
-    () => `productTileClip_${product.id}`.replace(/[^a-zA-Z0-9_-]/g, "_"),
-    [product.id],
-  );
-
   const formatPrice = (p) =>
     p.toLocaleString("hu-HU").replace(/\s/g, " ") + " Ft/" + product.unit;
 
@@ -86,50 +19,15 @@ export default function ProductCard({ product }) {
   return (
     <Link
       href={`/termekek/${product.category}/${product.slug}`}
-      className="block no-underline group h-full "
+      className="block no-underline group h-full"
     >
-      <article className="relative overflow-visible transition-transform duration-300 group-hover:-translate-y-1 h-full aspect-[1/1.18]">
-        {/* Ár kártya mögött */}
-        <div className="absolute bg-linear-to-b from-[#adb420] to-accent flex items-end justify-end z-0 right-0 bottom-0 min-w-[75%] h-[15%] pl-7 pr-4 rounded-none rounded-br-lg p-4">
-          <Span className="uppercase type-h4 text-black-dark">
-            {formatPrice(product.price)}
-          </Span>
-        </div>
-
-        {shape.loaded && (
-          <svg
-            className="absolute inset-0 z-1 h-full w-full pointer-events-none overflow-visible"
-            viewBox={shape.viewBox}
-            preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <defs>
-              <clipPath id={clipId}>
-                <path d={shape.path} />
-              </clipPath>
-            </defs>
-
-            <path d={shape.path} fill="#FFFFFF" />
-
-            <path
-              d={shape.path}
-              fill="none"
-              stroke="#3A3A3A"
-              strokeWidth={2}
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
-        )}
-
-        {!shape.loaded && (
-          <div className="absolute inset-0 z-1 bg-white border-2 border-black-dark hover:border-accent rounded-8" />
-        )}
-
-        <div className="absolute flex flex-col gap-4 inset-0 z-2">
+      <article className="relative transition-transform duration-300 group-hover:-translate-y-1 h-full flex flex-col">
+        {/* ── Closed card body — full border, all corners rounded ── */}
+        <div className="relative z-1 flex-1 bg-white border-2 border-[#3A3A3A] rounded-t-lg rounded-br-lg overflow-hidden flex flex-col">
           {/* Badges */}
-          <div className="absolute top-px right-px rounded-tr-[10px] rounded-bl-lg overflow-hidden z-4 flex flex-col">
+          <div className="absolute top-0 right-0 rounded-tr-sm rounded-bl-lg overflow-hidden z-4 flex flex-col">
             {product.isNew && (
-              <Label as="span" className="bg-accent text-black type-h6 p-4">
+              <Label as="span" className="bg-accent text-black type-h6 xl:p-4 p-2">
                 ÚJ
               </Label>
             )}
@@ -141,22 +39,15 @@ export default function ProductCard({ product }) {
             )}
           </div>
 
-          {/* SKU, ha kell finoman jobb oldalon */}
-          {product.sku && (
-            <div className="absolute z-4 text-[10px] font-bold tracking-[0.14em] text-black/25 whitespace-nowrap uppercase right-4 bottom-[2%] transform-[rotate(90deg)_translateX(-50%)] origin-[right_center]">
-              {product.sku}
-            </div>
-          )}
-
-          {/* Márka badge jobb felül */}
-          <div className="absolute z-4 rounded-full bg-[#F3F1E9] flex items-center justify-center top-7.5 right-8.5 w-14.5 h-14.5">
+          {/* Brand badge */}
+          <div className="absolute z-4 bg-[#F3F1E9] flex items-center justify-center top-0 left-0 rounded-tl-sm rounded-br-lg xl:p-3 p-1">
             <span className="text-[#e11919] font-black text-sm tracking-tight">
               BP2
             </span>
           </div>
 
-          {/* Kép */}
-          <div className="z-3 flex items-center justify-center pt-2">
+          {/* Image */}
+          <div className="z-3 flex items-center justify-center pt-2 flex-1">
             <Image
               src={product.images[0]}
               alt={product.name}
@@ -166,17 +57,24 @@ export default function ProductCard({ product }) {
             />
           </div>
 
-          {/* Termék név + anyag */}
-          <div className="px-4">
-            <H5 className="text-black uppercase type-h5">{product.name}</H5>
+          {/* Product name + material */}
+          <div className="px-2 py-2">
+            <H5 className="text-black uppercase type-h6 leading-[1] ">{product.name}</H5>
+
+            {/* SKU */}
+          {product.sku && (
+            <div className="z-4 text-[10px] text-black/50 whitespace-nowrap uppercase right-4 bottom-[2%]">
+              {product.sku}
+            </div>
+          )}
 
             <Small className="text-black block type-sm">
               {product.specs?.Anyag || "Alumínium tetőszellőző"}
             </Small>
           </div>
 
-          {/* Raktár */}
-          <div className="flex items-center gap-3 left-0 top-0 px-4">
+          {/* Stock */}
+          <div className="flex items-center gap-1 px-2 pb-3 pt-1">
             <div
               className="w-3.5 h-3.5 rounded-full"
               style={{
@@ -184,9 +82,42 @@ export default function ProductCard({ product }) {
               }}
             />
 
-            <div className="uppercase text-black type-small">
+            <div className="text-black type-small">
               Raktáron: {product.stock} db
             </div>
+          </div>
+        </div>
+
+        {/* ── Bottom hanging section ── */}
+        <div className="flex items-stretch w-full -mt-[12px] lg:h-[52px] h-[40] bg-accent rounded-lg">
+          {/* White card extension — fills remaining space on the left */}
+          <div className="flex-1 bg-white border-l-2 border-b-2 border-[#3A3A3A] rounded-bl-lg z-2 lg:h-[52px] h-[40]" />
+
+          {/* SVG corner — maintains aspect ratio, transitions white→green */}
+          <svg
+            className="shrink-0 lg:h-[42px] h-[30px] lg:-ml-2 -ml-[0.49rem] w-auto block mt-[10px] z-1"
+            viewBox="0 0 51.92 33.07"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              className="z-10"
+              d="M0,0v33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03V0H0Z"
+              fill="#FFFFFF"
+            />
+            <path
+              d="M0,33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03"
+              fill="none"
+              stroke="#3A3A3A"
+              strokeWidth={2}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+
+          {/* Price text — in the green area on the right */}
+          <div className="shrink-0 flex items-center -ml-1 pl-0 lg:pr-4 pr-2 pt-0 lg:h-16 h-13">
+            <Span className="uppercase type-h4 text-black-dark leading-none text-xs">
+              {formatPrice(product.price)}
+            </Span>
           </div>
         </div>
       </article>

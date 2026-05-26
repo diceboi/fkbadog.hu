@@ -61,7 +61,7 @@ export const products = [
     category: "classic-series",
     name: "GAMMA Szellőző",
     sku: "CS-GAMM-003",
-    price: 21900,
+    price: 21900000,
     unit: "db",
     images: ["/products/classic-series/GAMMA.webp", "/products/classic-series/GAMMA.jpg"],
     description:
@@ -324,7 +324,7 @@ export const products = [
     category: "retro-series",
     name: "GAMMA RETRO",
     sku: "RET-GAMM-003",
-    price: 22400,
+    price: 2200400,
     unit: "db",
     images: ["/products/retro-series/GAMMA RETRO.jpg"],
     description: "GAMMA retro stílus magas teljesítménnyel.",

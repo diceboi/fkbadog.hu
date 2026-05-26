@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 
 function BlockRevealWord({ children, colorClass, textClass, delay }) {
   return (
-    <span className="relative inline-block overflow-hidden px-1 md:px-2 pb-1 -mb-1">
-      <span className={`inline-block opacity-0 animate-block-reveal-text ${textClass}`} style={{ animationDelay: delay }}>
+    <span className="relative inline-block overflow-hidden px-1 md:px-2 pt-2 md:pt-3 pb-1 -mt-2 md:-mt-3 -mb-1">
+      <span className={`inline-block opacity-0 animate-block-reveal-text leading-[.9] ${textClass}`} style={{ animationDelay: delay }}>
         {children}
       </span>
       <span className={`absolute inset-0 ${colorClass} animate-block-reveal-mask`} style={{ animationDelay: delay, transform: "translateX(-101%)" }} />
@@ -63,7 +63,7 @@ export default function Hero() {
             <span>Csurgó és környéke</span>
           </div>
 
-          <h1 className="type-h1 text-center flex flex-col items-center justify-center gap-2 md:gap-3">
+          <h1 className="type-h1 text-center flex flex-col items-center justify-center gap-2 md:gap-3 leading-10">
             <span className="sr-only">Bádogos és Tetőfedő anyag Kereskedés</span>
 
             {/* Asztali / Tablet: Egybefüggő nagy blokkok */}

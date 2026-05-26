@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fontsource-variable/mona-sans": "^5.2.8",
+    "@supabase/supabase-js": "^2.106.2",
     "next": "16.0.8",
     "react": "19.2.1",
     "react-dom": "19.2.1",

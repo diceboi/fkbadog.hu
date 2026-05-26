@@ -361,8 +361,8 @@ export default function Navbar() {
                   isScrolled ? "opacity-100" : "opacity-0"
                 }`}
                 style={{
-                  backdropFilter: "invert(1)",
-                  WebkitBackdropFilter: "invert(1)",
+                  backdropFilter: "invert(1) blur(5px)",
+                  WebkitBackdropFilter: "invert(1) blur(5px)",
                   WebkitMaskImage: "url(/fk-logo-green.svg)",
                   WebkitMaskSize: "contain",
                   WebkitMaskRepeat: "no-repeat",

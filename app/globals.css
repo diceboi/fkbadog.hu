@@ -42,7 +42,7 @@
   --type-body: clamp(0.9375rem, 0.268vw + 0.884rem, 1.125rem);
 
   /* Small / Caption ~12px → ~14px */
-  --type-small: clamp(0.75rem, 0.179vw + 0.714rem, 0.875rem);
+  --type-small: clamp(0.75rem, 0.179vw + 0.714rem, 0.675rem);
 
   /* Label / Overline fixed ~11px → ~12px */
   --type-label: clamp(0.6875rem, 0.089vw + 0.669rem, 0.75rem);
@@ -90,7 +90,7 @@
   .type-h6 {
     font-family: var(--font-sans);
     font-weight: 500;
-    line-height: 1;
+    line-height: .75;
     letter-spacing: -0.02em;
     text-transform: uppercase;
     font-variation-settings: "wdth" 125, "wght" 500;
@@ -480,12 +480,15 @@
     0% {
       opacity: 1;
     }
+
     50% {
       opacity: 1;
     }
+
     80% {
       opacity: 0;
     }
+
     100% {
       opacity: 0;
     }
@@ -499,6 +502,7 @@
     0% {
       transform: scale(1.811) rotate(0deg);
     }
+
     100% {
       transform: scale(108.66) rotate(45deg);
     }
