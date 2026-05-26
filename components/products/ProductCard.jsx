@@ -21,9 +21,9 @@ export default function ProductCard({ product }) {
       href={`/termekek/${product.category}/${product.slug}`}
       className="block no-underline group h-full"
     >
-      <article className="relative transition-transform duration-300 group-hover:-translate-y-1 h-full flex flex-col">
+      <article className="relative transition-transform duration-300 h-full flex flex-col">
         {/* ── Closed card body — full border, all corners rounded ── */}
-        <div className="relative z-1 flex-1 bg-white border-2 border-[#3A3A3A] rounded-t-lg rounded-br-lg overflow-hidden flex flex-col">
+        <div className="relative z-1 flex-1 bg-white border-2 border-white group-hover:border-black-mid duration-300 rounded-t-lg rounded-br-lg overflow-hidden flex flex-col shadow-lg">
           {/* Badges */}
           <div className="absolute top-0 right-0 rounded-tr-sm rounded-bl-lg overflow-hidden z-4 flex flex-col">
             {product.isNew && (
@@ -40,11 +40,17 @@ export default function ProductCard({ product }) {
           </div>
 
           {/* Brand badge */}
-          <div className="absolute z-4 bg-[#F3F1E9] flex items-center justify-center top-0 left-0 rounded-tl-sm rounded-br-lg xl:p-3 p-1">
-            <span className="text-[#e11919] font-black text-sm tracking-tight">
-              BP2
-            </span>
-          </div>
+          {product.brand && (
+            <div className="absolute z-4 bg-[#F3F1E9] flex items-center justify-center top-0 left-0 rounded-tl-sm rounded-br-lg xl:p-3 p-1 h-[32px] min-w-[48px]">
+              {product.brand.toLowerCase() === 'bp2' ? (
+                <Image src="/logos/BP2-logo-red.png" alt="BP2" width={40} height={16} className="object-contain w-auto h-4" />
+              ) : (
+                <span className="text-[#e11919] font-black text-sm tracking-tight uppercase">
+                  {product.brand}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Image */}
           <div className="z-3 flex items-center justify-center pt-2 flex-1">
@@ -89,13 +95,13 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* ── Bottom hanging section ── */}
-        <div className="flex items-stretch w-full -mt-[12px] lg:h-[52px] h-[40] bg-accent rounded-lg">
+        <div className="flex items-stretch w-full -mt-[12px] lg:h-[52px] h-[40px] bg-accent rounded-lg">
           {/* White card extension — fills remaining space on the left */}
-          <div className="flex-1 bg-white border-l-2 border-b-2 border-[#3A3A3A] rounded-bl-lg z-2 lg:h-[52px] h-[40]" />
+          <div className="flex-1 bg-white border-l-2 border-b-2 border-white group-hover:border-black-mid transition-all duration-300 rounded-bl-lg z-2 lg:h-[52px] h-[40px]" />
 
           {/* SVG corner — maintains aspect ratio, transitions white→green */}
           <svg
-            className="shrink-0 lg:h-[42px] h-[30px] lg:-ml-2 -ml-[0.49rem] w-auto block mt-[10px] z-1"
+            className="shrink-0 lg:h-[41px] h-[29px] lg:-ml-[2px] -ml-[1px] w-auto block mt-[10px] z-1 overflow-visible"
             viewBox="0 0 51.92 33.07"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -107,9 +113,9 @@ export default function ProductCard({ product }) {
             <path
               d="M0,33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03"
               fill="none"
-              stroke="#3A3A3A"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
+              className="stroke-white group-hover:stroke-black-mid transition-all duration-300"
             />
           </svg>
 

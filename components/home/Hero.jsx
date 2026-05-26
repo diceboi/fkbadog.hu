@@ -63,7 +63,7 @@ export default function Hero() {
             <span>Csurgó és környéke</span>
           </div>
 
-          <h1 className="type-h1 text-center flex flex-col items-center justify-center gap-2 md:gap-3 leading-10">
+          <h1 className="type-h1 text-center flex flex-col items-center justify-center gap-2 md:gap-3 leading-[.8]">
             <span className="sr-only">Bádogos és Tetőfedő anyag Kereskedés</span>
 
             {/* Asztali / Tablet: Egybefüggő nagy blokkok */}
