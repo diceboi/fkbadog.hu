@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { H5, Small, Label, Span } from "@/components/ui/typography";
-
+import { TbShoppingCartPlus } from "react-icons/tb";
 /**
  * Bottom corner shape — extracted from ProductTileBottom.svg
  * viewBox: 0 0 51.92 33.07 — just the diagonal corner element
@@ -27,7 +27,10 @@ export default function ProductCard({ product }) {
           {/* Badges */}
           <div className="absolute top-0 right-0 rounded-tr-sm rounded-bl-lg overflow-hidden z-4 flex flex-col">
             {product.isNew && (
-              <Label as="span" className="bg-accent text-black type-h6 xl:p-4 p-2">
+              <Label
+                as="span"
+                className="bg-accent text-black type-h6 xl:p-4 p-2"
+              >
                 ÚJ
               </Label>
             )}
@@ -42,8 +45,14 @@ export default function ProductCard({ product }) {
           {/* Brand badge */}
           {product.brand && (
             <div className="absolute z-4 bg-[#F3F1E9] flex items-center justify-center top-0 left-0 rounded-tl-sm rounded-br-lg xl:p-3 p-1 h-[32px] min-w-[48px]">
-              {product.brand.toLowerCase() === 'bp2' ? (
-                <Image src="/logos/BP2-logo-red.png" alt="BP2" width={40} height={16} className="object-contain w-auto h-4" />
+              {product.brand.toLowerCase() === "bp2" ? (
+                <Image
+                  src="/logos/BP2-logo-red.png"
+                  alt="BP2"
+                  width={40}
+                  height={16}
+                  className="object-contain w-auto h-4"
+                />
               ) : (
                 <span className="text-[#e11919] font-black text-sm tracking-tight uppercase">
                   {product.brand}
@@ -65,14 +74,16 @@ export default function ProductCard({ product }) {
 
           {/* Product name + material */}
           <div className="px-2 py-2">
-            <H5 className="text-black uppercase type-h6 leading-[1] ">{product.name}</H5>
+            <H5 className="text-black uppercase type-h6 leading-[1] ">
+              {product.name}
+            </H5>
 
             {/* SKU */}
-          {product.sku && (
-            <div className="z-4 text-[10px] text-black/50 whitespace-nowrap uppercase right-4 bottom-[2%]">
-              {product.sku}
-            </div>
-          )}
+            {product.sku && (
+              <div className="z-4 text-[10px] text-black/50 whitespace-nowrap uppercase right-4 bottom-[2%]">
+                {product.sku}
+              </div>
+            )}
 
             <Small className="text-black block type-sm">
               {product.specs?.Anyag || "Alumínium tetőszellőző"}
@@ -95,9 +106,59 @@ export default function ProductCard({ product }) {
         </div>
 
         {/* ── Bottom hanging section ── */}
-        <div className="flex items-stretch w-full -mt-[12px] lg:h-[52px] h-[40px] bg-accent rounded-lg">
+        <div className="flex items-stretch w-full -mt-[12px] lg:h-[52px] h-[40px] bg-gray-mid rounded-lg">
           {/* White card extension — fills remaining space on the left */}
-          <div className="flex-1 bg-white border-l-2 border-b-2 border-white group-hover:border-black-mid transition-all duration-300 rounded-bl-lg z-2 lg:h-[52px] h-[40px]" />
+          <div className="flex-1 bg-white border-l-2 border-b-2 border-white group-hover:border-black-mid transition-all duration-300 rounded-bl-lg z-2 lg:h-[52px] h-[40px] flex items-center justify-start pl-2 lg:pl-2 min-w-0 pr-2">
+            {/* Unified Cart Button */}
+            <button
+              className="group/cart relative h-[24px] lg:h-[32px] lg:-mr-10 -mr-8 cursor-pointer flex-1 flex z-10"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              type="button"
+            >
+              {/* Background solid part */}
+              <div className="bg-accent h-full flex-1 z-10 relative rounded-l-sm" />
+
+              {/* Background SVG part */}
+              <div className="relative h-[24px] lg:h-[32px] w-[36px] lg:w-[42px] xl:w-[50px] overflow-visible shrink-0 text-accent">
+                {/* Bottom stronger transparent SVG */}
+                <svg
+                  className="absolute top-0 left-0 w-full h-full opacity-60 z-0"
+                  viewBox="0 0 75.48 51.74"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M67.79,0H0v51.74h22.15c7.96,0,15.59-3.16,21.21-8.79l29.85-29.85c4.83-4.83,1.41-13.1-5.43-13.1Z"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                {/* Top sliding SVG */}
+                <div className="absolute top-0 left-[-10px] xl:left-[-14px] group-hover/cart:left-0 transition-all duration-300 w-full h-full z-10">
+                  <svg
+                    className="w-full h-full"
+                    viewBox="0 0 75.48 51.74"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M67.79,0H0v51.74h22.15c7.96,0,15.59-3.16,21.21-8.79l29.85-29.85c4.83-4.83,1.41-13.1-5.43-13.1Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Content placed over the background */}
+              <div className="absolute inset-0 z-30 flex items-center justify-center md:justify-between pl-0 md:pl-3 pr-4 md:pr-8 lg:pr-10">
+                <span className="hidden md:inline text-black font-bold text-[10px] xl:text-[11px] uppercase mt-[1px] whitespace-nowrap">
+                  Kosárba
+                </span>
+                <TbShoppingCartPlus className="text-black w-[16px] xl:w-[18px] h-[16px] xl:h-[18px] shrink-0" />
+              </div>
+            </button>
+          </div>
 
           {/* SVG corner — maintains aspect ratio, transitions white→green */}
           <svg
@@ -121,7 +182,7 @@ export default function ProductCard({ product }) {
 
           {/* Price text — in the green area on the right */}
           <div className="shrink-0 flex items-center -ml-1 pl-0 lg:pr-4 pr-2 pt-0 lg:h-16 h-13">
-            <Span className="uppercase type-h4 text-black-dark leading-none text-xs">
+            <Span className="uppercase type-h4 text-cream leading-none text-xs">
               {formatPrice(product.price)}
             </Span>
           </div>
