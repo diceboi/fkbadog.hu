@@ -144,7 +144,7 @@ function SearchBar() {
           transition: "border-radius 0.3s ease-in-out",
         }}
       >
-          <input
+        <input
           type="text"
           placeholder="MIT KERESEL?"
           value={searchQuery}
@@ -207,11 +207,10 @@ function SearchBar() {
 
       {/* Dropdown javaslatok */}
       <div
-        className={`absolute outline-1 outline-cream top-[calc(100%-8px)] left-[1px] w-[calc(100%-2px)] bg-cream z-[5] overflow-hidden transition-all duration-300 ease-in-out ${
-          isSearchFocused
-            ? "max-h-[300px] border-t border-black/10 opacity-100"
-            : "max-h-0 opacity-0 pointer-events-none"
-        }`}
+        className={`absolute outline-1 outline-cream top-[calc(100%-8px)] left-[1px] w-[calc(100%-2px)] bg-cream z-[5] overflow-hidden transition-all duration-300 ease-in-out ${isSearchFocused
+          ? "max-h-[300px] border-t border-black/10 opacity-100"
+          : "max-h-0 opacity-0 pointer-events-none"
+          }`}
         style={{
           borderBottomLeftRadius: SEARCH.radius,
           borderBottomRightRadius: SEARCH.radius,
@@ -335,14 +334,17 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-75 ${
-          isScrolled ? "pt-0 pl-0" : "pt-4 xl:pt-8 pl-0 xl:pl-8"
-        } h-[70px] xl:h-[116px]`}
-      >
-        <div
-          className={`relative z-10 flex items-start justify-between gap-2 xl:gap-4 w-full transition-all duration-75 ${
-            isScrolled ? "pl-4 pr-0 xl:pl-8 xl:pr-4" : "pl-8 pr-4"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-75 ${isScrolled ? "pt-0 pl-0" : "pt-4 xl:pt-8 pl-0 xl:pl-8"
           } h-[70px] xl:h-[116px]`}
+      >
+        {/* Full-width grey-mid strip above nav content — fills the top padding space */}
+        <div
+          className={`absolute top-0 left-0 right-0 bg-black-mid transition-all duration-75 hidden xl:block ${isScrolled ? "h-0" : "h-8"
+            }`}
+        />
+        <div
+          className={`relative z-10 flex items-start justify-between gap-2 xl:gap-4 w-full transition-all duration-75 ${isScrolled ? "pl-4 pr-0 xl:pl-8 xl:pr-4" : "pl-8 pr-4"
+            } h-[70px] xl:h-[116px]`}
         >
           <div
             className="flex items-center gap-2 xl:gap-4 flex-1 h-[70px] xl:h-[116px]"
@@ -357,9 +359,8 @@ export default function Navbar() {
                 className={`w-[58px] h-[58px] xl:w-[80px] xl:h-[80px] object-contain transition-opacity duration-150 ${isScrolled ? "opacity-0" : "opacity-100"}`}
               />
               <div
-                className={`absolute inset-0 transition-opacity duration-150 pointer-events-none ${
-                  isScrolled ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute inset-0 transition-opacity duration-150 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
+                  }`}
                 style={{
                   backdropFilter: "invert(1) blur(5px)",
                   WebkitBackdropFilter: "invert(1) blur(5px)",
@@ -387,17 +388,16 @@ export default function Navbar() {
               className="h-full w-auto object-cover pointer-events-none -mr-[1px]"
             />
             <div
-              className="relative z-[2] flex items-center justify-end gap-1 transition-all duration-300 h-full"
+              className="relative z-[2] flex items-center justify-end gap-1 transition-all duration-75 h-full"
               style={{
                 paddingRight: 16,
                 paddingLeft: 20,
                 backgroundColor: "var(--color-black-mid)",
               }}
             >
-              <div 
-                className={`absolute top-0 bottom-0 right-0 w-[16px] bg-black-mid transition-transform duration-75 z-[-1] ${
-                  isScrolled ? "translate-x-full" : "translate-x-0"
-                }`}
+              <div
+                className={`absolute top-0 bottom-0 right-0 w-[16px] bg-black-mid transition-transform duration-75 z-[-1] ${isScrolled ? "translate-x-full" : "translate-x-0"
+                  }`}
               />
               <img
                 src="/svg/InnerRound.svg"
@@ -444,9 +444,8 @@ export default function Navbar() {
               <span className="relative flex items-end h-1/2">
                 <img src="/svg/HamburgerToggle.svg" alt="" className={`h-full w-auto transition-opacity duration-150 ${isScrolled ? 'opacity-0' : 'opacity-100'}`} />
                 <div
-                  className={`absolute inset-0 transition-opacity duration-150 pointer-events-none ${
-                    isScrolled ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={`absolute inset-0 transition-opacity duration-150 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
+                    }`}
                   style={{
                     backdropFilter: "invert(1)",
                     WebkitBackdropFilter: "invert(1)",
@@ -474,9 +473,8 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`fixed inset-0 bg-black-mid z-40 flex flex-col px-4 pt-16 pb-6 transition-transform duration-500 ease-in-out ${
-          menuOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className={`fixed inset-0 bg-black-mid z-40 flex flex-col px-4 pt-16 pb-6 transition-transform duration-500 ease-in-out ${menuOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
         style={{
           transitionDelay: menuOpen ? "0ms" : "300ms",
         }}
@@ -487,33 +485,32 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className={`text-white font-bold text-2xl tracking-[0.06em] uppercase py-4 no-underline border-b border-white/[0.06] transition-all duration-300 ${
-                menuOpen ? "" : "opacity-0"
-              }`}
+              className={`text-white font-bold text-2xl tracking-[0.06em] uppercase py-4 no-underline border-b border-white/[0.06] transition-all duration-300 ${menuOpen ? "" : "opacity-0"
+                }`}
               style={{
-                transitionDelay: menuOpen 
-                  ? "0ms" 
+                transitionDelay: menuOpen
+                  ? "0ms"
                   : `${(navLinks.length - index) * 50}ms`,
               }}
             >
               <span className="relative inline-block overflow-hidden px-2 -mx-2">
-                <span 
-                  className={`inline-block transition-opacity duration-300 ${menuOpen ? "opacity-0 animate-block-reveal-text" : "opacity-0"}`} 
+                <span
+                  className={`inline-block transition-opacity duration-300 ${menuOpen ? "opacity-0 animate-block-reveal-text" : "opacity-0"}`}
                   style={{ animationDelay: menuOpen ? `${400 + index * 100}ms` : '0ms' }}
                 >
                   {link.label.toUpperCase()}
                 </span>
                 {menuOpen && (
-                  <span 
-                    className="absolute inset-0 bg-accent animate-block-reveal-mask" 
-                    style={{ animationDelay: `${400 + index * 100}ms`, transform: "translateX(-101%)" }} 
+                  <span
+                    className="absolute inset-0 bg-accent animate-block-reveal-mask"
+                    style={{ animationDelay: `${400 + index * 100}ms`, transform: "translateX(-101%)" }}
                   />
                 )}
               </span>
             </Link>
           ))}
 
-          <div 
+          <div
             className={`mt-8 self-start transition-all duration-300 ${menuOpen ? "" : "opacity-0"}`}
             style={{ transitionDelay: menuOpen ? "0ms" : "0ms" }}
           >
@@ -529,9 +526,9 @@ export default function Navbar() {
                 Anyagszükséglet kalkulátor
               </Link>
               {menuOpen && (
-                <span 
-                  className="absolute inset-0 bg-white animate-block-reveal-mask" 
-                  style={{ animationDelay: `${400 + navLinks.length * 100}ms`, transform: "translateX(-101%)" }} 
+                <span
+                  className="absolute inset-0 bg-white animate-block-reveal-mask"
+                  style={{ animationDelay: `${400 + navLinks.length * 100}ms`, transform: "translateX(-101%)" }}
                 />
               )}
             </span>

@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 export default async function KategoriaPage({ params }) {
   const { kategoria } = await params;
-  
+
   // Try to find the category in the static categories data for hero image/description
   const staticCat = getCategoryBySlug(kategoria) || {
     nameFHU: kategoria.toUpperCase(),
@@ -33,7 +33,7 @@ export default async function KategoriaPage({ params }) {
   // Dynamically map slug back to db csoport_nev
   const { data: catData } = await supabase.from("termekek").select("csoport_nev").limit(1000);
   const distinctGroups = [...new Set((catData || []).map(d => d.csoport_nev).filter(Boolean))];
-  
+
   const groupMapping = distinctGroups.reduce((acc, group) => {
     const slug = group.toLowerCase().replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
       .replace(/ó/g, 'o').replace(/ö/g, 'o').replace(/ő/g, 'o')
@@ -50,7 +50,7 @@ export default async function KategoriaPage({ params }) {
     query = query.eq("csoport_nev", dbGroup);
   } else {
     // Fallback if not found
-    query = query.limit(50); 
+    query = query.limit(50);
   }
 
   const { data: termekek } = await query;
@@ -58,17 +58,19 @@ export default async function KategoriaPage({ params }) {
 
   return (
     <>
-      <ProductsHero
-        title="Termékek"
-        bgImage={staticCat.heroImage}
-        breadcrumbs={[
-          { href: "/termekek", label: "Termékek" },
-          { label: dbGroup || staticCat.nameFHU },
-        ]}
-      />
-      <CategoryTabs activeSlug={kategoria} />
-      <section style={{ background: "#0d0d0d", padding: "48px 0 80px" }}>
-        <div className="container">
+      <div className="relative bg-linear-to-b from-black-mid via-black-mid to-cream">
+        <ProductsHero
+          title={dbGroup || staticCat.nameFHU}
+          bgImage={staticCat.heroImage}
+          breadcrumbs={[
+            { href: "/termekek", label: "Termékek" },
+            { label: dbGroup || staticCat.nameFHU },
+          ]}
+        />
+        <CategoryTabs activeSlug={kategoria} />
+      </div>
+      <section className="bg-cream">
+        <div className="mx-auto px-2 lg:px-4 max-w-[1440px]">
           <ProductFiltersAndGrid products={products} />
         </div>
       </section>

@@ -8,7 +8,10 @@ import "swiper/css/navigation";
 import CategoryTile from "./CategoryTile";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
-export default function CategorySlider({ items }) {
+export default function CategorySlider({ items, activeSlug }) {
+  const activeIndex = items.findIndex((item) => item.key === activeSlug);
+  const initialSlide = activeIndex !== -1 ? activeIndex : 0;
+
   return (
     <div className="relative category-slider-container">
       <Swiper
@@ -17,6 +20,7 @@ export default function CategorySlider({ items }) {
         slidesPerView={1.5}
         slidesOffsetBefore={16}
         slidesOffsetAfter={16}
+        initialSlide={initialSlide}
         navigation={{
           prevEl: ".category-slider-prev",
           nextEl: ".category-slider-next",
@@ -42,7 +46,12 @@ export default function CategorySlider({ items }) {
       >
         {items.map(({ key, label, image }) => (
           <SwiperSlide key={key} className="h-auto py-4">
-            <CategoryTile slug={key} label={label} image={image} />
+            <CategoryTile
+              slug={key}
+              label={label}
+              image={image}
+              isActive={key === activeSlug}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
