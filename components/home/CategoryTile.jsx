@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CategoryTile({ slug, label, image, href, isActive = false }) {
+export default function CategoryTile({ slug, label, image, href, isActive = false, textColor, activeColor = "text-white" }) {
   return (
     <Link
       href={href || `/termekek/${slug}`}
@@ -12,9 +12,8 @@ export default function CategoryTile({ slug, label, image, href, isActive = fals
       <article className="relative transition-transform duration-300 h-full min-h-[200px] group flex flex-col overflow-visible">
 
         {/* ── Closed card body — dark gradient background, yellow border ── */}
-        <div className={`relative z-2 flex-1 bg-black-mid border-2 transition-all duration-300 rounded-t-lg rounded-br-lg overflow-hidden flex flex-col ${
-          isActive ? "border-accent" : "border-black-mid group-hover:border-accent"
-        }`}>          
+        <div className={`relative z-2 flex-1 bg-black-mid border-2 transition-all duration-300 rounded-t-lg rounded-br-lg overflow-hidden flex flex-col ${isActive ? "border-accent" : "border-black-mid group-hover:border-accent"
+          }`}>
           {/* Image Container */}
           <div className="z-3 flex items-center justify-center flex-1 p-6 pb-2">
             <Image
@@ -30,9 +29,8 @@ export default function CategoryTile({ slug, label, image, href, isActive = fals
         {/* ── Bottom hanging section ── */}
         <div className="flex items-stretch w-full h-[53px] bg-transparent -mt-[2px] z-2">
           {/* Dark card extension — matching the bottom gradient color */}
-          <div className={`flex-1 bg-black-mid border-l-2 border-b-2 transition-all duration-300 rounded-bl-lg z-0 h-[42px] ${
-            isActive ? "border-accent" : "border-black-mid group-hover:border-accent"
-          }`} />
+          <div className={`flex-1 bg-black-mid border-l-2 border-b-2 transition-all duration-300 rounded-bl-lg z-0 h-[42px] ${isActive ? "border-accent" : "border-black-mid group-hover:border-accent"
+            }`} />
 
           {/* SVG corner — transitions dark → transparent */}
           <svg
@@ -49,18 +47,15 @@ export default function CategoryTile({ slug, label, image, href, isActive = fals
               fill="none"
               strokeWidth={2}
               vectorEffect="non-scaling-stroke"
-              className={`transition-all duration-300 ${
-                isActive ? "stroke-accent" : "stroke-black-mid group-hover:stroke-accent"
-              }`}
+              className={`transition-all duration-300 ${isActive ? "stroke-accent" : "stroke-black-mid group-hover:stroke-accent"
+                }`}
             />
-
           </svg>
 
           {/* Text container / empty spacer on the right */}
           <div className="shrink flex items-center justify-end -ml-1 pl-2 pr-0  z-3 max-w-[65%] w-min h-[58px]">
-            <span className={`uppercase type-h6 leading-[1.15] text-wrap text-right break-words transition-colors duration-300 ${
-              isActive ? "text-accent font-bold" : "text-white"
-            }`}>
+            <span className={`uppercase type-h6 leading-[1.15] text-wrap text-right break-words transition-colors duration-300 ${isActive ? activeColor : `font-bold ${textColor}`
+              }`}>
               {label}
             </span>
           </div>

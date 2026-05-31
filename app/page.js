@@ -17,7 +17,7 @@ export default function HomePage() {
     <>
       <Hero />
       <div className="relative bg-linear-to-b from-black-mid to-cream">
-        <CategoryGrid />
+        <CategoryGrid textColor={'text-cream'} />
         <USPBanner />
       </div>
       <PopularProducts />
