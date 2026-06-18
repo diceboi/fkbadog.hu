@@ -13,7 +13,7 @@ const fallbackImages = [
   "/products/classic-series/HETA.webp"
 ];
 
-export default async function CategoryGrid() {
+export default async function CategoryGrid({ textColor, activeColor }) {
   // Fetch distinct categories from the database
   // Note: Since Supabase API doesn't have a direct distinct() method, 
   // we'll fetch all and filter in JS, or we can just fetch a few known categories.
@@ -21,10 +21,10 @@ export default async function CategoryGrid() {
   // Actually, since we only have ~904 rows, fetching all is relatively fast for a Server Component,
   // but selecting just the column is better.
   const { data } = await supabase.from("termekek").select("csoport_nev").limit(1000);
-  
+
   // Deduplicate and filter empty
   const distinctGroups = [...new Set((data || []).map(d => d.csoport_nev).filter(Boolean))];
-  
+
   // Create featured list (limit to 10 for grid)
   const featured = distinctGroups.slice(0, 10).map((group, index) => {
     // Generate slug from group name
@@ -32,7 +32,7 @@ export default async function CategoryGrid() {
       .replace(/ó/g, 'o').replace(/ö/g, 'o').replace(/ő/g, 'o')
       .replace(/ú/g, 'u').replace(/ü/g, 'u').replace(/ű/g, 'u')
       .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      
+
     return {
       key: slug,
       label: group,
@@ -46,7 +46,7 @@ export default async function CategoryGrid() {
       <div className="mx-auto px-4 lg:px-8">
         <p className="text-cream type-h5 uppercase mb-4">Termékkategóriák</p>
       </div>
-      <CategorySlider items={featured} />
+      <CategorySlider textColor={textColor} activeColor={activeColor} items={featured} />
     </section>
   );
 }

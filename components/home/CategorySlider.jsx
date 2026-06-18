@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import CategoryTile from "./CategoryTile";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
-export default function CategorySlider({ items, activeSlug }) {
+export default function CategorySlider({ items, activeSlug, textColor, activeColor }) {
   const activeIndex = items.findIndex((item) => item.key === activeSlug);
   const initialSlide = activeIndex !== -1 ? activeIndex : 0;
 
@@ -51,6 +51,8 @@ export default function CategorySlider({ items, activeSlug }) {
               label={label}
               image={image}
               isActive={key === activeSlug}
+              textColor={textColor}
+              activeColor={activeColor}
             />
           </SwiperSlide>
         ))}
@@ -65,7 +67,7 @@ export default function CategorySlider({ items, activeSlug }) {
           <FiChevronRight size={20} className="lg:size-6" />
         </button>
       </div>
-      
+
       <div className="absolute top-1/2 -translate-y-1/2 left-2 lg:left-12 z-10 flex">
         <button
           className="category-slider-prev w-8 h-8 lg:w-12 lg:h-12 rounded-full bg-accent text-black flex items-center justify-center hover:scale-105 hover:bg-accent-light transition-all shadow-lg disabled:opacity-0 disabled:cursor-not-allowed cursor-pointer"

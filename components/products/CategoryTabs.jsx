@@ -2,7 +2,7 @@
 import CategorySlider from "@/components/home/CategorySlider";
 import { categories } from "@/data/categories";
 
-export default function CategoryTabs({ activeSlug }) {
+export default function CategoryTabs({ activeSlug, textColor, activeColor }) {
   const sliderItems = categories.map((cat) => ({
     key: cat.slug,
     label: cat.nameFHU,
@@ -10,11 +10,11 @@ export default function CategoryTabs({ activeSlug }) {
   }));
 
   return (
-    <section className="py-6 overflow-hidden">
+    <section className="py-6 overflow-hidden bg-cream">
       <div className="mx-auto px-4 lg:px-8 mb-4">
         <p className="section-label">Kategóriák</p>
       </div>
-      <CategorySlider items={sliderItems} activeSlug={activeSlug} />
+      <CategorySlider items={sliderItems} activeSlug={activeSlug} textColor={textColor} activeColor={activeColor} />
     </section>
   );
 }
