@@ -27,18 +27,32 @@ export default async function KategoriaPage({ params }) {
   const staticCat = getCategoryBySlug(kategoria) || {
     nameFHU: kategoria.toUpperCase(),
     heroImage: "/products/classic-series/ALFA.webp",
-    description: "Termékek a kiválasztott kategóriában"
+    description: "Termékek a kiválasztott kategóriában",
   };
 
   // Dynamically map slug back to db csoport_nev
-  const { data: catData } = await supabase.from("termekek").select("csoport_nev").limit(1000);
-  const distinctGroups = [...new Set((catData || []).map(d => d.csoport_nev).filter(Boolean))];
+  const { data: catData } = await supabase
+    .from("termekek")
+    .select("csoport_nev")
+    .limit(1000);
+  const distinctGroups = [
+    ...new Set((catData || []).map((d) => d.csoport_nev).filter(Boolean)),
+  ];
 
   const groupMapping = distinctGroups.reduce((acc, group) => {
-    const slug = group.toLowerCase().replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
-      .replace(/ó/g, 'o').replace(/ö/g, 'o').replace(/ő/g, 'o')
-      .replace(/ú/g, 'u').replace(/ü/g, 'u').replace(/ű/g, 'u')
-      .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const slug = group
+      .toLowerCase()
+      .replace(/á/g, "a")
+      .replace(/é/g, "e")
+      .replace(/í/g, "i")
+      .replace(/ó/g, "o")
+      .replace(/ö/g, "o")
+      .replace(/ő/g, "o")
+      .replace(/ú/g, "u")
+      .replace(/ü/g, "u")
+      .replace(/ű/g, "u")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
     acc[slug] = group;
     return acc;
   }, {});
@@ -70,7 +84,7 @@ export default async function KategoriaPage({ params }) {
         <CategoryTabs activeSlug={kategoria} />
       </div>
       <section className="bg-cream">
-        <div className="mx-auto px-2 lg:px-4 max-w-[1440px]">
+        <div className="mx-auto px-2 lg:px-8">
           <ProductFiltersAndGrid products={products} />
         </div>
       </section>
