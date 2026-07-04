@@ -20,7 +20,11 @@ export default async function CategoryGrid({ textColor, activeColor }) {
   // Let's use RPC if available, or just fetch all and deduplicate.
   // Actually, since we only have ~904 rows, fetching all is relatively fast for a Server Component,
   // but selecting just the column is better.
-  const { data } = await supabase.from("termekek").select("csoport_nev").limit(1000);
+  const { data, error } = await supabase.from("termekek").select("csoport_nev").limit(1000);
+
+  if (error) {
+    console.error("Hiba a kategóriák lekérdezésekor:", error);
+  }
 
   // Deduplicate and filter empty
   const distinctGroups = [...new Set((data || []).map(d => d.csoport_nev).filter(Boolean))];

@@ -9,6 +9,10 @@ export default async function PopularProducts() {
     .select("*")
     .limit(10);
 
+  if (error) {
+    console.error("Hiba a népszerű termékek lekérdezésekor:", error);
+  }
+
   const products = (termekek || []).map(mapSupabaseProductToLocal);
 
   return (
