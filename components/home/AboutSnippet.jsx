@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { H2, H1, P, Span, Label } from "@/components/ui/typography";
 import BlockRevealWord from "@/components/animations/BlockRevealWord";
+import MainCtaButton from "@/components/ui/MainCtaButton";
 
 const photos = [
   "/photos/0138f3f2-df23-4e40-986e-ebea45599cdb.jpg",
@@ -113,9 +114,9 @@ export default function AboutSnippet() {
             segítünk, hogy biztosan a megfelelőt vidd.
           </P>
           <div className="shrink-0 flex items-center justify-center gap-6 flex-wrap">
-            <Link href="/rolunk" className="btn-dark">
+            <MainCtaButton href="/rolunk">
               Tudj meg többet rólunk
-            </Link>
+            </MainCtaButton>
             <Link
               href="/kapcsolat"
               className="text-gray-dark font-semibold underline transition-opacity hover:opacity-70 uppercase type-small"

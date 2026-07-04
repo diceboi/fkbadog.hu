@@ -139,331 +139,345 @@ export default function ProductFiltersAndGrid({ products }) {
 
       {/* Filters Sidebar */}
       <aside className="lg:col-span-1 w-full h-full relative">
-        <div className="sticky top-[120px] z-20 w-full">
-        {/* Search Input Pill */}
-        <div className="relative flex items-center mb-6 h-12">
-          <input
-            type="text"
-            placeholder="KERESÉS"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            className="flex-1 h-full bg-white text-black font-semibold placeholder-black/50 text-[13px] tracking-wider px-5 rounded-l-full outline-none"
-          />
-          <div className="h-full relative w-12 flex items-center justify-center bg-white rounded-r-full overflow-visible shrink-0 pr-1">
-            <button className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 transition-all cursor-pointer">
+        <div className="sticky  top-[140px] z-20 w-full">
+          {/* Search Input Pill */}
+          <div className="relative flex items-center mb-6 h-12">
+            <input
+              type="text"
+              placeholder="KERESÉS"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="flex-1 h-full bg-white text-black font-semibold placeholder-black/50 text-[13px] tracking-wider px-5 rounded-l-full outline-none"
+            />
+            <div className="h-full relative w-12 flex items-center justify-center bg-white rounded-r-full overflow-visible shrink-0 pr-1">
+              <button className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 transition-all cursor-pointer">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Custom Filter Card */}
+          <div className="relative w-full mr-8 lg:mr-0 lg:w-full flex flex-col drop-shadow-xl z-20">
+
+            {/* Cutout Header */}
+            <div className="flex  items-end w-full h-[40px] relative z-10 -mb-[2px]">
+              {/* Left Block */}
+              <div className={`w-[80px] h-full border-t-2 border-l-2 transition-colors duration-300 rounded-tl-[8px] ${openFilters.price
+                ? "bg-white border-black-mid/[0.08]"
+                : "bg-[#1d1d1e] border-white/10"
+                }`} />
+
+              {/* SVG Curve */}
               <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
+                className="shrink-0 h-[40px] w-auto block -ml-[1px] z-[100] scale-y-[-1]"
+                viewBox="0 0 51.92 33.07"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.35-4.35" />
+                <path
+                  d="M0,0v33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03V0H0Z"
+                  fill={openFilters.price ? "#FFFFFF" : "#1D1D1E"}
+                  className="transition-colors duration-300"
+                />
+                <path
+                  d="M0,33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03"
+                  fill="none"
+                  stroke={openFilters.price ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.1)"}
+                  strokeWidth="2"
+                  vectorEffect="non-scaling-stroke"
+                  className="transition-colors duration-300"
+                />
               </svg>
-            </button>
-          </div>
-        </div>
 
-        {/* Custom Filter Card */}
-        <div className="relative w-full mr-8 lg:mr-0 lg:w-full flex flex-col drop-shadow-xl z-20">
-          
-          {/* Cutout Header */}
-          <div className="flex items-end w-full h-[40px] relative z-10 -mb-[2px]">
-            {/* Left Block */}
-            <div className="w-[80px] h-full bg-[#1d1d1e] border-t-2 border-l-2 border-white/10 rounded-tl-[8px]" />
-            
-            {/* SVG Curve */}
-            <svg
-              className="shrink-0 h-[40px] w-auto block -ml-[1px] z-[100] scale-y-[-1]"
-              viewBox="0 0 51.92 33.07"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0,0v33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03V0H0Z" fill="#1D1D1E" />
-              <path d="M0,33.07c6.37,0,12.47-2.53,16.97-7.03l17.98-17.98c4.5-4.5,10.61-7.03,16.97-7.03" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
-            </svg>
-            
-            {/* Empty Text Area */}
-            <div className="flex-1 h-full relative">
-              <div className="absolute inset-0 flex items-start justify-end pr-3 pt-2">
-                <span className="text-white/60 font-black text-[12px] tracking-[0.2em] uppercase">SZŰRŐ</span>
+              {/* Empty Text Area */}
+              <div className="flex-1 h-full relative">
+                <div className="absolute inset-0 flex items-start justify-end pr-3 pt-2">
+                  <span className="text-black-dark font-black text-[12px] tracking-[0.2em] uppercase">SZŰRŐ</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Main Body */}
-          <div className="bg-[#1d1d1e] border-l-2 border-r-2 border-b-2 border-white/10 rounded-b-[8px] rounded-tr-[8px] flex flex-col relative z-0 overflow-hidden">
-            
-            {/* Top Right Border (covers the transparent part of the header) */}
-            <div className="absolute top-0 right-0 border-t-2 border-white/10 rounded-tr-[8px] pointer-events-none" style={{ left: '142px' }} />
+            {/* Main Body */}
+            <div className="bg-[#1d1d1e] rounded-b-[8px] rounded-tr-[8px] flex flex-col relative z-0 overflow-hidden">
 
-            {/* ÁR (Price) Filter */}
-            <div className={`transition-colors duration-300 ${openFilters.price ? "bg-white text-black" : "bg-transparent text-white"} border-b border-white/[0.08] last:border-0`}>
-              <div
-                onClick={() => toggleFilter("price")}
-                className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.price ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
-              >
-                <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.price ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
-                  ÁR
-                </span>
-                <svg
-                  className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.price ? "rotate-180" : ""}`}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
+              {/* Top Right Border (covers the transparent part of the header) */}
+              <div className="absolute top-0 right-0 border-t-2 border-white/10 rounded-tr-[8px] pointer-events-none" style={{ left: '142px' }} />
+
+              {/* ÁR (Price) Filter */}
+              <div className={`transition-colors duration-300 ${openFilters.price ? "bg-white text-black border-black-mid/[0.08]" : "bg-transparent text-white border-white/[0.08]"} border-b  last:border-0`}>
+                <div
+                  onClick={() => toggleFilter("price")}
+                  className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.price ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
                 >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </div>
+                  <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.price ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
+                    ÁR
+                  </span>
+                  <svg
+                    className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.price ? "rotate-180" : ""}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </div>
 
-              {openFilters.price && (
-                <div className="px-5 pb-6 pt-1">
-                  <div className="flex justify-between text-[11px] font-bold text-black/60 mb-2">
-                    <span>{minPrice.toLocaleString("hu-HU")} Ft</span>
-                    <span>{maxPrice.toLocaleString("hu-HU")} Ft</span>
-                  </div>
-
-                  <div className="relative w-full h-[6px] bg-black/10 rounded-full my-6 flex items-center">
-                    <div
-                      className="absolute h-full bg-[#d6df27] rounded-full"
-                      style={{
-                        left: `${(minPrice / maxPossible) * 100}%`,
-                        right: `${100 - (maxPrice / maxPossible) * 100}%`,
-                      }}
-                    />
-                    <input
-                      type="range"
-                      min="0"
-                      max={maxPossible}
-                      value={minPrice}
-                      onChange={(e) => {
-                        const val = Math.min(Number(e.target.value), maxPrice - 100);
-                        setMinPrice(val);
-                        setPage(1);
-                      }}
-                      className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none cursor-pointer slider-thumb-transparent z-30"
-                    />
-                    <input
-                      type="range"
-                      min="0"
-                      max={maxPossible}
-                      value={maxPrice}
-                      onChange={(e) => {
-                        const val = Math.max(Number(e.target.value), minPrice + 100);
-                        setMaxPrice(val);
-                        setPage(1);
-                      }}
-                      className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none cursor-pointer slider-thumb-transparent z-30"
-                    />
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#d6df27] text-black font-extrabold text-[9px] px-2 py-0.5 rounded-full pointer-events-none shadow-md z-40"
-                      style={{ left: `${(minPrice / maxPossible) * 100}%` }}
-                    >
-                      {minPrice}
+                {openFilters.price && (
+                  <div className="px-5 pb-6 pt-1">
+                    <div className="flex justify-between text-[11px] font-bold text-black/60 mb-2">
+                      <span>{minPrice.toLocaleString("hu-HU")} Ft</span>
+                      <span>{maxPrice.toLocaleString("hu-HU")} Ft</span>
                     </div>
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#d6df27] text-black font-extrabold text-[9px] px-2 py-0.5 rounded-full pointer-events-none shadow-md z-40"
-                      style={{ left: `${(maxPrice / maxPossible) * 100}%` }}
-                    >
-                      {maxPrice}
+
+                    <div className="relative w-full h-[6px] bg-black/10 rounded-full my-6 flex items-center">
+                      <div
+                        className="absolute h-full bg-[#d6df27] rounded-full"
+                        style={{
+                          left: `${(minPrice / maxPossible) * 100}%`,
+                          right: `${100 - (maxPrice / maxPossible) * 100}%`,
+                        }}
+                      />
+                      <input
+                        type="range"
+                        min="0"
+                        max={maxPossible}
+                        value={minPrice}
+                        onChange={(e) => {
+                          const val = Math.min(Number(e.target.value), maxPrice - 100);
+                          setMinPrice(val);
+                          setPage(1);
+                        }}
+                        className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none cursor-pointer slider-thumb-transparent z-30"
+                      />
+                      <input
+                        type="range"
+                        min="0"
+                        max={maxPossible}
+                        value={maxPrice}
+                        onChange={(e) => {
+                          const val = Math.max(Number(e.target.value), minPrice + 100);
+                          setMaxPrice(val);
+                          setPage(1);
+                        }}
+                        className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none cursor-pointer slider-thumb-transparent z-30"
+                      />
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#d6df27] text-black font-extrabold text-[9px] px-2 py-0.5 rounded-full pointer-events-none shadow-md z-40"
+                        style={{ left: `${(minPrice / maxPossible) * 100}%` }}
+                      >
+                        {minPrice}
+                      </div>
+                      <div
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#d6df27] text-black font-extrabold text-[9px] px-2 py-0.5 rounded-full pointer-events-none shadow-md z-40"
+                        style={{ left: `${(maxPrice / maxPossible) * 100}%` }}
+                      >
+                        {maxPrice}
+                      </div>
                     </div>
                   </div>
+                )}
+              </div>
+
+              {/* Gyártó (Brand) Filter */}
+              {uniqueBrands.length > 0 && (
+                <div className={`transition-colors duration-300 ${openFilters.brand ? "bg-white text-black border-black-mid/[0.08]" : "bg-transparent text-white border-white/[0.08]"} border-b last:border-0`}>
+                  <div
+                    onClick={() => toggleFilter("brand")}
+                    className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.brand ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
+                  >
+                    <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.brand ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
+                      Gyártó
+                    </span>
+                    <svg
+                      className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.brand ? "rotate-180" : ""}`}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </div>
+
+                  {openFilters.brand && (
+                    <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
+                      {uniqueBrands.map((brand) => (
+                        <label
+                          key={brand}
+                          className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedBrands.includes(brand)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedBrands((prev) => [...prev, brand]);
+                              } else {
+                                setSelectedBrands((prev) => prev.filter((b) => b !== brand));
+                              }
+                              setPage(1);
+                            }}
+                            className="accent-[#d6df27] rounded"
+                          />
+                          <span>{brand}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
 
-            {/* Gyártó (Brand) Filter */}
-            {uniqueBrands.length > 0 && (
-              <div className={`transition-colors duration-300 ${openFilters.brand ? "bg-white text-black" : "bg-transparent text-white"} border-b border-white/[0.08] last:border-0`}>
-                <div
-                  onClick={() => toggleFilter("brand")}
-                  className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.brand ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
-                >
-                  <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.brand ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
-                    Gyártó
-                  </span>
-                  <svg
-                    className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.brand ? "rotate-180" : ""}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
+              {/* Anyag (Material) Filter */}
+              {uniqueMaterials.length > 0 && (
+                <div className={`transition-colors duration-300 ${openFilters.material ? "bg-white text-black border-black-mid/[0.08]" : "bg-transparent text-white border-white/[0.08]"} border-b last:border-0`}>
+                  <div
+                    onClick={() => toggleFilter("material")}
+                    className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.material ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
                   >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </div>
-
-                {openFilters.brand && (
-                  <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
-                    {uniqueBrands.map((brand) => (
-                      <label
-                        key={brand}
-                        className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedBrands.includes(brand)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedBrands((prev) => [...prev, brand]);
-                            } else {
-                              setSelectedBrands((prev) => prev.filter((b) => b !== brand));
-                            }
-                            setPage(1);
-                          }}
-                          className="accent-[#d6df27] rounded"
-                        />
-                        <span>{brand}</span>
-                      </label>
-                    ))}
+                    <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.material ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
+                      Anyag
+                    </span>
+                    <svg
+                      className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.material ? "rotate-180" : ""}`}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
                   </div>
-                )}
-              </div>
-            )}
 
-            {/* Anyag (Material) Filter */}
-            {uniqueMaterials.length > 0 && (
-              <div className={`transition-colors duration-300 ${openFilters.material ? "bg-white text-black" : "bg-transparent text-white"} border-b border-white/[0.08] last:border-0`}>
-                <div
-                  onClick={() => toggleFilter("material")}
-                  className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.material ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
-                >
-                  <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.material ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
-                    Anyag
-                  </span>
-                  <svg
-                    className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.material ? "rotate-180" : ""}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </div>
-
-                {openFilters.material && (
-                  <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
-                    {uniqueMaterials.map((mat) => (
-                      <label
-                        key={mat}
-                        className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedMaterials.includes(mat)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedMaterials((prev) => [...prev, mat]);
-                            } else {
-                              setSelectedMaterials((prev) => prev.filter((m) => m !== mat));
-                            }
-                            setPage(1);
-                          }}
-                          className="accent-[#d6df27] rounded"
-                        />
-                        <span>{mat}</span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Szín (Color) Filter */}
-            {uniqueColors.length > 0 && (
-              <div className={`transition-colors duration-300 ${openFilters.color ? "bg-white text-black" : "bg-transparent text-white"} border-b border-white/[0.08] last:border-0`}>
-                <div
-                  onClick={() => toggleFilter("color")}
-                  className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.color ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
-                >
-                  <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.color ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
-                    Szín
-                  </span>
-                  <svg
-                    className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.color ? "rotate-180" : ""}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </div>
-
-                {openFilters.color && (
-                  <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
-                    {uniqueColors.map((color) => (
-                      <label
-                        key={color}
-                        className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedColors.includes(color)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectedColors((prev) => [...prev, color]);
-                            } else {
-                              setSelectedColors((prev) => prev.filter((c) => c !== color));
-                            }
-                            setPage(1);
-                          }}
-                          className="accent-[#d6df27] rounded"
-                        />
-                        <span>{color}</span>
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Raktárkészlet (Stock) Filter */}
-            <div className={`transition-colors duration-300 ${openFilters.stock ? "bg-white text-black" : "bg-transparent text-white"} border-b border-white/[0.08] last:border-0`}>
-              <div
-                onClick={() => toggleFilter("stock")}
-                className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.stock ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
-              >
-                <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.stock ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
-                  Raktárkészlet
-                </span>
-                <svg
-                  className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.stock ? "rotate-180" : ""}`}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </div>
-
-              {openFilters.stock && (
-                <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
-                  <label className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]">
-                    <input
-                      type="checkbox"
-                      checked={onlyInStock}
-                      onChange={(e) => {
-                        setOnlyInStock(e.target.checked);
-                        setPage(1);
-                      }}
-                      className="accent-[#d6df27] rounded"
-                    />
-                    <span>Csak raktáron</span>
-                  </label>
+                  {openFilters.material && (
+                    <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
+                      {uniqueMaterials.map((mat) => (
+                        <label
+                          key={mat}
+                          className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedMaterials.includes(mat)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedMaterials((prev) => [...prev, mat]);
+                              } else {
+                                setSelectedMaterials((prev) => prev.filter((m) => m !== mat));
+                              }
+                              setPage(1);
+                            }}
+                            className="accent-[#d6df27] rounded"
+                          />
+                          <span>{mat}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
 
+              {/* Szín (Color) Filter */}
+              {uniqueColors.length > 0 && (
+                <div className={`transition-colors duration-300 ${openFilters.color ? "bg-white text-black border-black-mid" : "bg-transparent text-white border-white/[0.08]"} border-b last:border-0`}>
+                  <div
+                    onClick={() => toggleFilter("color")}
+                    className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.color ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
+                  >
+                    <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.color ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
+                      Szín
+                    </span>
+                    <svg
+                      className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.color ? "rotate-180" : ""}`}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </div>
+
+                  {openFilters.color && (
+                    <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
+                      {uniqueColors.map((color) => (
+                        <label
+                          key={color}
+                          className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedColors.includes(color)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedColors((prev) => [...prev, color]);
+                              } else {
+                                setSelectedColors((prev) => prev.filter((c) => c !== color));
+                              }
+                              setPage(1);
+                            }}
+                            className="accent-[#d6df27] rounded"
+                          />
+                          <span>{color}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Raktárkészlet (Stock) Filter */}
+              <div className={`transition-colors duration-300 ${openFilters.stock ? "bg-white text-black border-black-mid" : "bg-transparent text-white border-white/[0.08]"} border-b border-white/[0.08] last:border-0`}>
+                <div
+                  onClick={() => toggleFilter("stock")}
+                  className={`flex justify-between items-center cursor-pointer transition-colors px-5 ${openFilters.stock ? "py-5 hover:text-black/70" : "py-4 hover:text-[#d6df27]"}`}
+                >
+                  <span className={`uppercase text-[12px] tracking-[0.1em] ${openFilters.stock ? "font-extrabold text-black" : "font-semibold text-white/90"}`}>
+                    Raktárkészlet
+                  </span>
+                  <svg
+                    className={`w-3.5 h-3.5 transform transition-transform duration-200 ${openFilters.stock ? "rotate-180" : ""}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </div>
+
+                {openFilters.stock && (
+                  <div className="px-5 pb-6 flex flex-col gap-2 pt-1">
+                    <label className="flex items-center gap-2.5 cursor-pointer text-black/70 hover:text-black transition-colors text-[13px]">
+                      <input
+                        type="checkbox"
+                        checked={onlyInStock}
+                        onChange={(e) => {
+                          setOnlyInStock(e.target.checked);
+                          setPage(1);
+                        }}
+                        className="accent-[#d6df27] rounded"
+                      />
+                      <span>Csak raktáron</span>
+                    </label>
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
-        </div>
         </div>
       </aside>
 
@@ -515,11 +529,10 @@ export default function ProductFiltersAndGrid({ products }) {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`border border-white/15 py-2 px-3.5 rounded-[3px] text-[13px] cursor-pointer transition-all ${
-                  page === i + 1
-                    ? "bg-accent text-black font-bold"
-                    : "bg-transparent text-white hover:border-white/30"
-                }`}
+                className={`border border-white/15 py-2 px-3.5 rounded-[3px] text-[13px] cursor-pointer transition-all ${page === i + 1
+                  ? "bg-accent text-black font-bold"
+                  : "bg-transparent text-white hover:border-white/30"
+                  }`}
               >
                 {i + 1}
               </button>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import MainCtaButton from "@/components/ui/MainCtaButton";
 import { FiSearch } from "react-icons/fi";
 
 const navLinks = [
@@ -334,7 +335,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-75 ${isScrolled ? "pt-0 pl-0" : "pt-4 xl:pt-8 pl-0 xl:pl-8"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-75 ${isScrolled ? "pt-0 pl-0 bg-black-mid/25 backdrop-blur-xl" : "pt-4 xl:pt-8 pl-0 xl:pl-8 backdrop-blur-none"
           } h-[70px] xl:h-[116px]`}
       >
         {/* Full-width grey-mid strip above nav content — fills the top padding space */}
@@ -356,23 +357,7 @@ export default function Navbar() {
                 width={80}
                 height={80}
                 priority
-                className={`w-[58px] h-[58px] xl:w-[80px] xl:h-[80px] object-contain transition-opacity duration-150 ${isScrolled ? "opacity-0" : "opacity-100"}`}
-              />
-              <div
-                className={`absolute inset-0 transition-opacity duration-150 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
-                  }`}
-                style={{
-                  backdropFilter: "invert(1) blur(5px)",
-                  WebkitBackdropFilter: "invert(1) blur(5px)",
-                  WebkitMaskImage: "url(/fk-logo-green.svg)",
-                  WebkitMaskSize: "contain",
-                  WebkitMaskRepeat: "no-repeat",
-                  WebkitMaskPosition: "center",
-                  maskImage: "url(/fk-logo-green.svg)",
-                  maskSize: "contain",
-                  maskRepeat: "no-repeat",
-                  maskPosition: "center",
-                }}
+                className={`w-[55px] h-[55px] xl:w-[70px] xl:h-[70px] object-contain transition-all duration-150 ${isScrolled ? "brightness-0 invert mix-blend-difference" : ""}`}
               />
             </Link>
 
@@ -419,16 +404,14 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              <span className="relative inline-block overflow-hidden ml-2 rounded-[8px]">
-                <Link
+              <span className="relative inline-block overflow-hidden ml-2 rounded-[6px]">
+                <MainCtaButton
                   href="/kalkulator"
-                  className="inline-flex flex-col items-center justify-center bg-accent text-black font-extrabold text-[11px] tracking-[0.07em] uppercase py-[10px] px-[18px] no-underline whitespace-nowrap leading-[1.3] transition-all hover:opacity-90 opacity-0 animate-block-reveal-text"
+                  className="opacity-0 animate-block-reveal-text !rounded-[6px]"
                   style={{ animationDelay: `${600 + navLinks.length * 100}ms` }}
                 >
-                  Anyagszükséglet
-                  <br />
-                  <span className="opacity-[0.85]">Kalkulátor</span>
-                </Link>
+                  Kalkulátor
+                </MainCtaButton>
                 <span className="absolute inset-0 bg-white animate-block-reveal-mask" style={{ animationDelay: `${600 + navLinks.length * 100}ms`, transform: "translateX(-101%)" }} />
               </span>
             </div>
@@ -442,23 +425,7 @@ export default function Navbar() {
             {/* Hamburger */}
             <span className={`absolute inset-0 flex items-center ${isScrolled ? "justify-start ml-1" : "justify-start ml-2"} transition-all duration-300 ${menuOpen ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"}`}>
               <span className="relative flex items-end h-1/2">
-                <img src="/svg/HamburgerToggle.svg" alt="" className={`h-full w-auto transition-opacity duration-150 ${isScrolled ? 'opacity-0' : 'opacity-100'}`} />
-                <div
-                  className={`absolute inset-0 transition-opacity duration-150 pointer-events-none ${isScrolled ? "opacity-100" : "opacity-0"
-                    }`}
-                  style={{
-                    backdropFilter: "invert(1)",
-                    WebkitBackdropFilter: "invert(1)",
-                    WebkitMaskImage: "url(/svg/HamburgerToggle.svg)",
-                    WebkitMaskSize: "contain",
-                    WebkitMaskRepeat: "no-repeat",
-                    WebkitMaskPosition: "center",
-                    maskImage: "url(/svg/HamburgerToggle.svg)",
-                    maskSize: "contain",
-                    maskRepeat: "no-repeat",
-                    maskPosition: "center",
-                  }}
-                />
+                <img src="/svg/HamburgerToggle.svg" alt="" className="h-full w-auto" />
               </span>
             </span>
 

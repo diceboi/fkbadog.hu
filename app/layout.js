@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
         <Preloader />
         <ConditionalNavbar />
         <ConditionalBodyPadding />
-        <main className="bg-black-mid">{children}</main>
+        <main className="bg-black-mid relative z-10">{children}</main>
         <Footer />
       </body>
     </html>
