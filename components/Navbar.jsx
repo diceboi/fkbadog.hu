@@ -7,7 +7,7 @@ import MainCtaButton from "@/components/ui/MainCtaButton";
 import { FiSearch } from "react-icons/fi";
 
 const navLinks = [
-  { href: "/termekek", label: "Termékek" },
+  { href: "/termekek/classic-series", label: "Termékek" },
   { href: "/gyik", label: "GYIK" },
   { href: "/rolunk", label: "Rólunk" },
   { href: "/kapcsolat", label: "Kapcsolat" },
@@ -224,7 +224,7 @@ function SearchBar() {
           <ul className="flex flex-col gap-2 m-0 p-0 list-none">
             <li>
               <Link
-                href="/termekek"
+                href="/termekek/trapezoid-sheets"
                 className="text-sm font-bold text-black-dark hover:text-[#7f8518] transition-colors flex items-center gap-2 no-underline"
               >
                 <svg
@@ -244,7 +244,7 @@ function SearchBar() {
             </li>
             <li>
               <Link
-                href="/termekek"
+                href="/termekek/classic-series"
                 className="text-sm font-bold text-black-dark hover:text-[#7f8518] transition-colors flex items-center gap-2 no-underline"
               >
                 <svg
@@ -264,7 +264,7 @@ function SearchBar() {
             </li>
             <li>
               <Link
-                href="/termekek"
+                href="/termekek/accessories"
                 className="text-sm font-bold text-black-dark hover:text-[#7f8518] transition-colors flex items-center gap-2 no-underline"
               >
                 <svg
@@ -284,7 +284,7 @@ function SearchBar() {
             </li>
             <li>
               <Link
-                href="/termekek"
+                href="/termekek/linea"
                 className="text-sm font-bold text-black-dark hover:text-[#7f8518] transition-colors flex items-center gap-2 no-underline"
               >
                 <svg

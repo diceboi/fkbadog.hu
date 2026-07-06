@@ -30,7 +30,7 @@ export default async function PopularProducts() {
           <ProductCard key={p.id} product={p} />
         ))}
       </div>
-      <Link href="/termekek" className="btn-outline z-1 ">
+      <Link href="/termekek/classic-series" className="btn-outline z-1 ">
         Összes termék →
       </Link>
     </section>

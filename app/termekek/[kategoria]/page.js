@@ -1,10 +1,8 @@
-import { notFound } from "next/navigation";
 import { categories, getCategoryBySlug } from "@/data/categories";
 import ProductsHero from "@/components/products/ProductsHero";
 import CategoryTabs from "@/components/products/CategoryTabs";
 import ProductFiltersAndGrid from "@/components/products/ProductFiltersAndGrid";
 import CalculatorCTA from "@/components/shared/CalculatorCTA";
-import { supabase, mapSupabaseProductToLocal } from "@/lib/supabase";
 
 export async function generateStaticParams() {
   return categories.map((cat) => ({ kategoria: cat.slug }));
@@ -23,68 +21,30 @@ export async function generateMetadata({ params }) {
 export default async function KategoriaPage({ params }) {
   const { kategoria } = await params;
 
-  // Try to find the category in the static categories data for hero image/description
+  // Find the category in the static categories data for immediate rendering
   const staticCat = getCategoryBySlug(kategoria) || {
     nameFHU: kategoria.toUpperCase(),
     heroImage: "/products/classic-series/ALFA.webp",
     description: "Termékek a kiválasztott kategóriában",
   };
 
-  // Dynamically map slug back to db csoport_nev
-  const { data: catData } = await supabase
-    .from("termekek")
-    .select("csoport_nev")
-    .limit(1000);
-  const distinctGroups = [
-    ...new Set((catData || []).map((d) => d.csoport_nev).filter(Boolean)),
-  ];
-
-  const groupMapping = distinctGroups.reduce((acc, group) => {
-    const slug = group
-      .toLowerCase()
-      .replace(/á/g, "a")
-      .replace(/é/g, "e")
-      .replace(/í/g, "i")
-      .replace(/ó/g, "o")
-      .replace(/ö/g, "o")
-      .replace(/ő/g, "o")
-      .replace(/ú/g, "u")
-      .replace(/ü/g, "u")
-      .replace(/ű/g, "u")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-    acc[slug] = group;
-    return acc;
-  }, {});
-
-  const dbGroup = groupMapping[kategoria];
-
-  let query = supabase.from("termekek").select("*");
-  if (dbGroup) {
-    query = query.eq("csoport_nev", dbGroup);
-  } else {
-    // Fallback if not found
-    query = query.limit(50);
-  }
-
-  const { data: termekek } = await query;
-  const products = (termekek || []).map(mapSupabaseProductToLocal);
+  const title = staticCat.nameFHU;
 
   return (
     <>
       <div className="relative bg-linear-to-b from-black-mid via-black-mid to-cream">
         <ProductsHero
-          title={dbGroup || staticCat.nameFHU}
+          title={title}
           bgImage={staticCat.heroImage}
           breadcrumbs={[
             { href: "/termekek", label: "Termékek" },
-            { label: dbGroup || staticCat.nameFHU },
+            { label: title },
           ]}
         />
       </div>
       <section className="bg-cream">
         <div className="mx-auto px-4 lg:px-8">
-          <ProductFiltersAndGrid products={products} />
+          <ProductFiltersAndGrid kategoria={kategoria} />
         </div>
         <CategoryTabs activeSlug={kategoria} textColor={'text-black-mid'} activeColor={'text-black-mid'} />
       </section>

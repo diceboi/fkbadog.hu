@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import ProductCard from "@/components/products/ProductCard";
 
 const SORT_OPTIONS = [
@@ -9,7 +9,9 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "Ár: magas → alacsony" },
 ];
 
-export default function ProductFiltersAndGrid({ products }) {
+export default function ProductFiltersAndGrid({ products: initialProducts, kategoria }) {
+  const [products, setProducts] = useState(initialProducts || []);
+  const [isLoading, setIsLoading] = useState(!initialProducts);
   const [search, setSearch] = useState("");
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(100000);
@@ -17,8 +19,73 @@ export default function ProductFiltersAndGrid({ products }) {
   const [page, setPage] = useState(1);
   const PER_PAGE = 12;
 
+  useEffect(() => {
+    if (initialProducts) {
+      setProducts(initialProducts);
+      setIsLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    async function load() {
+      setIsLoading(true);
+      try {
+        const { supabase, mapSupabaseProductToLocal } = await import("@/lib/supabase");
+        
+        // Dynamically map slug back to db csoport_nev
+        const { data: catData } = await supabase
+          .from("termekek")
+          .select("csoport_nev")
+          .limit(1000);
+        
+        const distinctGroups = [
+          ...new Set((catData || []).map((d) => d.csoport_nev).filter(Boolean)),
+        ];
+
+        const groupMapping = distinctGroups.reduce((acc, group) => {
+          const slug = group
+            .toLowerCase()
+            .replace(/á/g, "a")
+            .replace(/é/g, "e")
+            .replace(/í/g, "i")
+            .replace(/ó/g, "o")
+            .replace(/ö/g, "o")
+            .replace(/ő/g, "o")
+            .replace(/ú/g, "u")
+            .replace(/ü/g, "u")
+            .replace(/ű/g, "u")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
+          acc[slug] = group;
+          return acc;
+        }, {});
+
+        const dbGroup = groupMapping[kategoria];
+
+        let query = supabase.from("termekek").select("*");
+        if (dbGroup) {
+          query = query.eq("csoport_nev", dbGroup);
+        } else {
+          query = query.limit(50);
+        }
+
+        const { data: termekek } = await query;
+        if (isMounted) {
+          const mapped = (termekek || []).map(mapSupabaseProductToLocal);
+          setProducts(mapped);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.error(err);
+        if (isMounted) setIsLoading(false);
+      }
+    }
+    load();
+    return () => { isMounted = false; };
+  }, [kategoria, initialProducts]);
+
   const maxPossible = useMemo(() => {
-    return Math.max(...products.map((p) => p.price), 100000);
+    return products.length > 0 ? Math.max(...products.map((p) => p.price), 100000) : 100000;
   }, [products]);
 
   // Collapsible state for filters
@@ -548,7 +615,37 @@ export default function ProductFiltersAndGrid({ products }) {
           </select>
         </div>
 
-        {paginated.length === 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+            {[...Array(8)].map((_, i) => (
+              <div 
+                key={i} 
+                className="h-[360px] w-full bg-white border border-black/10 rounded-lg p-5 flex flex-col justify-between"
+              >
+                {/* Image block skeleton */}
+                <div 
+                  className="h-[160px] w-full shimmer-placeholder rounded-md" 
+                  style={{ backgroundColor: "#f2f2eb" }} 
+                />
+                
+                {/* Text lines skeleton */}
+                <div className="flex-1 flex flex-col gap-2 mt-4">
+                  <div 
+                    className="h-5 w-3/4 shimmer-placeholder rounded-sm" 
+                    style={{ backgroundColor: "#f2f2eb" }} 
+                  />
+                  <div 
+                    className="h-4 w-1/2 shimmer-placeholder rounded-sm" 
+                    style={{ backgroundColor: "#f2f2eb" }} 
+                  />
+                </div>
+                
+                {/* Button skeleton */}
+                <div className="h-10 w-full bg-cream border border-black/10 rounded-lg mt-4" />
+              </div>
+            ))}
+          </div>
+        ) : paginated.length === 0 ? (
           <div className="text-center py-20 text-white/35">
             <p className="text-lg mb-2">Nincs találat</p>
             <p className="text-[13px]">Próbálj más keresési feltételt.</p>

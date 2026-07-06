@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const footerLinks = {
   "Gyors elérés": [
-    { href: "/termekek", label: "Termékek" },
+    { href: "/termekek/classic-series", label: "Termékek" },
     { href: "/gyik", label: "GYIK" },
     { href: "/rolunk", label: "Rólunk" },
     { href: "/kapcsolat", label: "Kapcsolat" },
