@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { H2, H1, P, Span, Label } from "@/components/ui/typography";
+import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { H1, P, Label } from "@/components/ui/typography";
 import BlockRevealWord from "@/components/animations/BlockRevealWord";
 import MainCtaButton from "@/components/ui/MainCtaButton";
+import { IoCloseOutline, IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 
 const photos = [
   "/photos/0138f3f2-df23-4e40-986e-ebea45599cdb.jpg",
@@ -35,6 +38,48 @@ const galleryClasses = [
 ];
 
 export default function AboutSnippet() {
+  const [photoIndex, setPhotoIndex] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const openLightbox = (index) => setPhotoIndex(index);
+  const closeLightbox = () => setPhotoIndex(null);
+
+  const showNext = useCallback(() => {
+    if (photoIndex !== null) {
+      setPhotoIndex((prev) => (prev + 1) % photos.length);
+    }
+  }, [photoIndex]);
+
+  const showPrev = useCallback(() => {
+    if (photoIndex !== null) {
+      setPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length);
+    }
+  }, [photoIndex]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (photoIndex === null) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    // Prevent scrolling when lightbox is open
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [photoIndex, showNext, showPrev]);
+
   return (
     <section className="section bg-cream overflow-hidden">
       <div className="flex flex-col container gap-8">
@@ -79,10 +124,11 @@ export default function AboutSnippet() {
         </H1>
 
         {/* Photo collage */}
-        <div className="flex justify-center items-center w-full py-10 lg:py-16">
+        <div className="flex justify-center items-center w-full pt-0 lg:pt-16 pb-16 lg:pb-32">
           {photos.map((src, i) => (
             <div
               key={src}
+              onClick={() => openLightbox(i)}
               className={`
                 relative shrink-0 transition-all duration-500 ease-out cursor-pointer origin-bottom
                 ${galleryClasses[i].zIndex} 
@@ -115,17 +161,77 @@ export default function AboutSnippet() {
           </P>
           <div className="shrink-0 flex items-center justify-center gap-6 flex-wrap">
             <MainCtaButton href="/rolunk">
-              Tudj meg többet rólunk
+              Kapcsolatfelvétel
             </MainCtaButton>
             <Link
               href="/kapcsolat"
               className="text-gray-dark font-semibold underline transition-opacity hover:opacity-70 uppercase type-small"
             >
-              Kapcsolatfelvétel →
+              Tudj meg többet rólunk
             </Link>
           </div>
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {photoIndex !== null && mounted && createPortal(
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center select-none transition-opacity duration-300 animate-fadeIn"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
+            className="absolute top-6 right-6 z-50 text-white/70 hover:text-white transition-colors duration-200 p-2 bg-black/25 rounded-full hover:bg-black/50"
+            onClick={closeLightbox}
+            aria-label="Bezárás"
+          >
+            <IoCloseOutline size={32} />
+          </button>
+
+          {/* Navigation Arrows */}
+          <button
+            className="absolute left-4 lg:left-8 z-50 text-white/70 hover:text-white transition-colors duration-200 p-3 bg-black/25 rounded-full hover:bg-black/50"
+            onClick={(e) => {
+              e.stopPropagation();
+              showPrev();
+            }}
+            aria-label="Előző kép"
+          >
+            <IoChevronBackOutline size={28} />
+          </button>
+
+          <button
+            className="absolute right-4 lg:right-8 z-50 text-white/70 hover:text-white transition-colors duration-200 p-3 bg-black/25 rounded-full hover:bg-black/50"
+            onClick={(e) => {
+              e.stopPropagation();
+              showNext();
+            }}
+            aria-label="Következő kép"
+          >
+            <IoChevronForwardOutline size={28} />
+          </button>
+
+          {/* Active Image Container */}
+          <div
+            className="relative max-w-[90vw] max-h-[85vh] aspect-[2/3] w-[450px] lg:w-[500px] max-md:w-[320px] rounded-xl overflow-hidden shadow-2xl transition-all duration-300 animate-scaleUp"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={photos[photoIndex]}
+              alt={`Munka fotó ${photoIndex + 1}`}
+              fill
+              className="object-cover"
+              sizes="(min-width: 768px) 500px, 320px"
+              priority
+            />
+            {/* Image Counter Badge */}
+            <span className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3.5 py-1.5 rounded-full bg-black/60 text-white/90 text-xs font-semibold tracking-wider">
+              {photoIndex + 1} / {photos.length}
+            </span>
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 }

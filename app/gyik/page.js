@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import ProductsHero from "@/components/products/ProductsHero";
 import CalculatorCTA from "@/components/shared/CalculatorCTA";
 
 const faqs = [
@@ -40,70 +41,49 @@ const faqs = [
 function FaqItem({ q, a }) {
   const [open, setOpen] = useState(false);
   return (
-    <div
-      style={{
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 4,
-        overflow: "hidden",
-        marginBottom: 8,
-        transition: "border-color 0.2s",
-      }}
-    >
+    <div className="relative bg-white border border-black/10 hover:border-black-mid/20 rounded-[8px] transition-all duration-300 shadow-xs mb-3">
       <button
         onClick={() => setOpen((o) => !o)}
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "20px 24px",
-          background: open ? "rgba(214,222,35,0.06)" : "rgba(255,255,255,0.02)",
-          border: "none",
-          cursor: "pointer",
-          textAlign: "left",
-          transition: "background 0.2s",
-        }}
+        className="w-full flex justify-between items-center py-5 px-6 md:py-6 md:px-8 bg-transparent border-none cursor-pointer text-left outline-none"
       >
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 700,
-            fontSize: 16,
-            color: open ? "var(--color-accent)" : "#fff",
-            letterSpacing: "0.01em",
-            transition: "color 0.2s",
-          }}
-        >
+        <span className="font-extrabold text-sm md:text-base text-black-dark tracking-wide uppercase select-none pr-8">
           {q}
         </span>
-        <span
-          style={{
-            color: "var(--color-accent)",
-            fontSize: 20,
-            fontWeight: 300,
-            flexShrink: 0,
-            marginLeft: 16,
-            transform: open ? "rotate(45deg)" : "rotate(0)",
-            transition: "transform 0.25s",
-            display: "inline-block",
-          }}
-        >
-          +
-        </span>
       </button>
-      {open && (
-        <div
+
+      {/* Accordion content */}
+      <div
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          open ? "max-h-[1000px] opacity-100 pb-8 px-6 md:px-8" : "max-h-0 opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="border-t border-black/10 pt-4">
+          <p className="text-black-dark/75 text-sm md:text-[15px] leading-relaxed font-medium">
+            {a}
+          </p>
+        </div>
+      </div>
+
+      {/* Custom organic cut corner with yellow/green triangle and arrow */}
+      <div className="absolute bottom-[-1px] right-[-1px] w-8 h-8 pointer-events-none z-10">
+        <svg className="w-full h-full" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          {/* Yellow/Green corner cut */}
+          <path d="M 0,32 L 32,0 V 32 Z" fill="#D6DF27" />
+          {/* Diagonal border line matching parent border */}
+          <path d="M 0,32 L 32,0" stroke="rgba(0,0,0,0.1)" strokeWidth="1" />
+        </svg>
+        {/* Arrow icon */}
+        <div 
+          className="absolute bottom-1.5 right-1.5 text-black transition-transform duration-300"
           style={{
-            padding: "4px 24px 20px",
-            color: "rgba(255,255,255,0.6)",
-            fontSize: 15,
-            lineHeight: 1.8,
-            background: "rgba(214,222,35,0.03)",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
           }}
         >
-          {a}
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -111,50 +91,34 @@ function FaqItem({ q, a }) {
 export default function GyikPage() {
   return (
     <>
-      {/* Hero */}
-      <section
-        style={{
-          background: "#0a0a0a",
-          padding: "80px 0 64px",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-        }}
-      >
-        <div className="container">
-          <p className="section-label" style={{ marginBottom: 12 }}>
-            Kérdések és válaszok
-          </p>
-          <h1
-            className="display-heading"
-            style={{ fontSize: "clamp(48px, 8vw, 96px)" }}
-          >
-            Gyak. Ism.
-            <br />
-            <span style={{ color: "var(--color-accent)" }}>Kérdések</span>
-          </h1>
-        </div>
-      </section>
+      {/* Hero section */}
+      <div className="relative bg-linear-to-b from-black-mid via-black-mid to-cream">
+        <ProductsHero
+          title="Gyakran Ismételt Kérdések"
+          bgImage="/photos/4afe475d-e9bc-4217-8a85-5d4bea08f436.jpg"
+          breadcrumbs={[
+            { href: "/", label: "Főoldal" },
+            { label: "GYIK" },
+          ]}
+        />
+      </div>
 
       {/* FAQ list */}
-      <section className="section" style={{ background: "#0d0d0d" }}>
-        <div className="container" style={{ maxWidth: 860 }}>
+      <section className="section bg-cream py-16 lg:py-24 min-h-[50vh]">
+        <div className="container max-w-[860px]">
           {faqs.map((faq, i) => (
             <FaqItem key={i} q={faq.q} a={faq.a} />
           ))}
 
-          <div
-            style={{
-              marginTop: 48,
-              padding: "32px",
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 4,
-              textAlign: "center",
-            }}
-          >
-            <p style={{ color: "rgba(255,255,255,0.5)", marginBottom: 16, fontSize: 15 }}>
+          {/* Contact box */}
+          <div className="mt-16 p-8 bg-white border border-black/10 rounded-[8px] text-center shadow-xs">
+            <p className="text-black-dark/65 mb-6 text-sm md:text-base font-semibold">
               Nem találtad meg a választ a kérdésedre?
             </p>
-            <a href="/kapcsolat" className="btn-primary">
+            <a 
+              href="/kapcsolat" 
+              className="inline-flex items-center justify-center bg-black-mid hover:bg-black text-white font-bold text-xs uppercase tracking-wider py-3.5 px-8 rounded-lg transition-all duration-300"
+            >
               Lépj kapcsolatba velünk
             </a>
           </div>

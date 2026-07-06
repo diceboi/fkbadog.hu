@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useId } from "react";
 
 export default function MainCtaButton({
   children,
@@ -10,8 +11,10 @@ export default function MainCtaButton({
   ...props
 }) {
   const isBlack = variant === "black";
-  const mainColor = isBlack ? "var(--color-black-mid)" : "var(--color-accent)";
+  const mainColor = isBlack ? "#1D1D1E" : "#D6DF27";
   const textColor = isBlack ? "text-white" : "text-black";
+  const id = useId();
+  const gradId = `btn-grad-${id.replace(/:/g, "")}`;
 
   const ButtonContent = () => (
     <>
@@ -28,27 +31,27 @@ export default function MainCtaButton({
         preserveAspectRatio="none"
       >
         <defs>
-          <linearGradient id={`btn-grad-${variant}`} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color={mainColor} stop-opacity="1" />
-            <stop offset="100%" stop-color={mainColor} stop-opacity="0.4" />
+          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={mainColor} stopOpacity="1" />
+            <stop offset="100%" stopColor={mainColor} stopOpacity="0.4" />
           </linearGradient>
         </defs>
 
         {/* Right gradient section (underneath) */}
         <path
           d="M 25,0 H 100 V 100 H 25 L 60,65 C 70,55 70,45 60,35 Z"
-          style={{ fill: `url(#btn-grad-${variant})` }}
+          fill={`url(#${gradId})`}
         />
 
         {/* Left solid section of the square */}
         <path
           d="M 0,0 H 25 L 60,35 C 70,45 70,55 60,65 L 25,100 H 0 Z"
-          style={{ fill: mainColor }}
+          fill={mainColor}
         />
       </svg>
 
       {/* 3. Label */}
-      <span className={`flex-grow text-center font-bold text-[13px] xl:text-[14px] tracking-[0.08em] uppercase py-2.5 px-5 xl:px-6 select-none z-20 ${textColor}`}>
+      <span className={`flex-grow text-center font-bold text-[12px] xl:text-[12px] uppercase py-2.5 px-5 xl:px-6 select-none z-20 ${textColor}`}>
         {children}
       </span>
     </>

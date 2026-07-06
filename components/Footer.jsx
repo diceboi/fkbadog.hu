@@ -88,7 +88,7 @@ export default function Footer() {
         </div>
 
         {/* Big watermark stretched exactly across container edges */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-[38%] pointer-events-none select-none z-0 flex justify-between font-black text-white/[0.03] text-[12.5vw] xl:text-[170px] leading-none uppercase tracking-tighter w-full">
+        <div className="absolute bottom-0 left-0 right-0 translate-y-[38%] pointer-events-none select-none z-0 flex justify-between font-black text-white/[0.03] text-[20vw] xl:text-[250px] leading-none uppercase tracking-tighter w-full">
           <span>F</span>
           <span>K</span>
           <span className="w-[3vw] xl:w-[40px]" /> {/* Spacer for word break */}

@@ -1,9 +1,11 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import BlockRevealWord from "@/components/animations/BlockRevealWord";
 
 export default function ProductsHero({ title, breadcrumbs, bgImage }) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const words = title ? title.split(" ") : [];
 
   return (
@@ -11,13 +13,18 @@ export default function ProductsHero({ title, breadcrumbs, bgImage }) {
       <section className="relative flex flex-col rounded-lg overflow-hidden min-h-[320px] md:min-h-[400px] w-full">
 
         {/* Background image & gradient overlay */}
-        <div className="absolute inset-0">
+        <div
+          className={`absolute inset-0 ${!isLoaded ? "shimmer-placeholder-dark" : ""}`}
+          style={!isLoaded ? { backgroundColor: "#1D1D1E" } : {}}
+        >
           {bgImage && (
             <Image
               src={bgImage}
               alt={title}
               fill
-              className="w-full h-full object-cover opacity-[0.45]"
+              onLoad={() => setIsLoaded(true)}
+              className={`w-full h-full object-cover transition-all duration-700 ${isLoaded ? "opacity-[0.45] blur-0" : "opacity-0 blur-md"
+                }`}
               priority
             />
           )}
@@ -54,7 +61,7 @@ export default function ProductsHero({ title, breadcrumbs, bgImage }) {
             </div>
           )}
 
-          <h1 className="type-h1 text-center flex flex-wrap justify-center gap-x-2.5 md:gap-x-3.5 leading-[.8]">
+          <h1 className="type-h1 text-center flex flex-wrap justify-center gap-x-2.5 md:gap-x-3.5 leading-[1]">
             <span className="sr-only">{title}</span>
             {words.map((word, index) => {
               const isAccent = index % 2 === 0;
@@ -62,7 +69,7 @@ export default function ProductsHero({ title, breadcrumbs, bgImage }) {
               return (
                 <BlockRevealWord
                   key={index}
-                  textClass={`${isAccent ? "text-accent" : "text-white"} leading-[.9]`}
+                  textClass={`${isAccent ? "text-accent" : "text-white"} leading-[1]`}
                   colorClass={isAccent ? "bg-accent" : "bg-white"}
                   delay={delay}
                 >

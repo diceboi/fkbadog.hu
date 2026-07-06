@@ -1,27 +1,58 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import BlockRevealWord from "@/components/animations/BlockRevealWord";
 
 export default function CategoryTile({ slug, label, image, href, isActive = false, textColor, activeColor = "text-white" }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
+    );
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  const shouldAnimate = isLoaded && isInView;
   return (
     <Link
       href={href || `/termekek/${slug}`}
       className="block no-underline group h-full"
     >
-      <article className="relative transition-transform duration-300 h-full min-h-[200px] group flex flex-col overflow-visible">
+      <article 
+        ref={containerRef}
+        className="relative transition-transform duration-300 h-full min-h-[200px] group flex flex-col overflow-visible"
+      >
 
         {/* ── Closed card body — dark gradient background, yellow border ── */}
         <div className={`relative z-2 flex-1 bg-black-mid border-2 transition-all duration-300 rounded-t-lg rounded-br-lg overflow-hidden flex flex-col ${isActive ? "border-accent" : "border-black-mid group-hover:border-accent"
           }`}>
           {/* Image Container */}
-          <div className="z-3 flex items-center justify-center flex-1 p-6 pb-2">
+          <div 
+            className={`z-3 flex items-center justify-center flex-1 p-6 pb-2 relative min-h-[140px] w-full ${!shouldAnimate ? "shimmer-placeholder" : ""}`}
+            style={!shouldAnimate ? { backgroundColor: "#1D1D1E" } : {}}
+          >
             <Image
               src={image}
               alt={label}
               width={260}
               height={160}
-              className="object-contain transition-transform duration-500 group-hover:scale-105 max-h-[140px] w-auto h-auto"
+              onLoad={() => setIsLoaded(true)}
+              className={`object-contain transition-all duration-300 group-hover:scale-105 max-h-[140px] w-auto h-auto ${
+                shouldAnimate ? "opacity-100 blur-0" : "opacity-0 blur-md"
+              }`}
             />
           </div>
         </div>
@@ -53,10 +84,17 @@ export default function CategoryTile({ slug, label, image, href, isActive = fals
           </svg>
 
           {/* Text container / empty spacer on the right */}
-          <div className="shrink flex items-center justify-end -ml-1 pl-2 pr-0  z-3 max-w-[65%] w-min h-[58px]">
-            <span className={`uppercase type-h6 leading-[1.15] text-wrap text-right break-words transition-colors duration-300 ${isActive ? activeColor : `font-bold ${textColor}`
-              }`}>
-              {label}
+          <div className="shrink flex items-center justify-end -ml-1 pl-2 pr-0 z-3 max-w-[65%] w-min h-[58px] relative">
+            {!shouldAnimate && (
+              <div 
+                className="absolute right-0 h-4 w-20 shimmer-placeholder rounded z-2" 
+                style={{ backgroundColor: "#1D1D1E" }}
+              />
+            )}
+            <span className={`uppercase type-h6 leading-[1.15] text-wrap text-right break-words transition-colors duration-300 relative z-1 flex justify-end`}>
+              <BlockRevealWord trigger={shouldAnimate} compact={true} textClass={isActive ? activeColor : `font-bold ${textColor}`} colorClass="bg-accent">
+                {label}
+              </BlockRevealWord>
             </span>
           </div>
         </div>

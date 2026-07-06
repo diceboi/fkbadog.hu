@@ -365,6 +365,84 @@
     animation: fadeInUp 0.6s ease both;
   }
 
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scaleUp {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.25s ease-out forwards;
+  }
+
+  .animate-scaleUp {
+    animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .shimmer-placeholder {
+    position: relative;
+    overflow: hidden;
+    background-color: #f2f2eb;
+  }
+
+  .shimmer-placeholder::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.6) 60%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    animation: shimmer 1.5s infinite;
+    content: '';
+  }
+
+  .shimmer-placeholder-dark {
+    position: relative;
+    overflow: hidden;
+    background-color: #1D1D1E;
+  }
+
+  .shimmer-placeholder-dark::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      rgba(214, 223, 39, 0) 0%,
+      rgba(214, 223, 39, 0.05) 20%,
+      rgba(214, 223, 39, 0.15) 60%,
+      rgba(214, 223, 39, 0) 100%
+    );
+    animation: shimmer 2s infinite;
+    content: '';
+  }
+
   /* ── Hero section – aspect-ratio az SVG arányai alapján ── */
   .hero-section {
     /* 375 × 1015.49 */

@@ -139,34 +139,80 @@ export default function ProductFiltersAndGrid({ products }) {
 
       {/* Filters Sidebar */}
       <aside className="lg:col-span-1 w-full h-full relative">
-        <div className="sticky  top-[140px] z-20 w-full">
-          {/* Search Input Pill */}
-          <div className="relative flex items-center mb-6 h-12">
-            <input
-              type="text"
-              placeholder="KERESÉS"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
+        <div className="sticky top-[140px] z-20 w-full lg:px-0">
+          {/* Search Input Custom Shape (matching the Nav design) */}
+          <div className="relative flex items-center mb-6 h-12 transition-all duration-300 group">
+            {/* Left input portion */}
+            <div
+              className="flex-1 flex items-center relative z-10 border-y-2 border-l-2 border-[#1D1D1E] border-r-0 overflow-hidden h-full"
+              style={{
+                borderTopLeftRadius: "8px",
+                borderBottomLeftRadius: "8px",
+                background: "#FFFFFF",
               }}
-              className="flex-1 h-full bg-white text-black font-semibold placeholder-black/50 text-[13px] tracking-wider px-5 rounded-l-full outline-none"
-            />
-            <div className="h-full relative w-12 flex items-center justify-center bg-white rounded-r-full overflow-visible shrink-0 pr-1">
-              <button className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:scale-105 transition-all cursor-pointer">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.35-4.35" />
-                </svg>
-              </button>
+            >
+              <input
+                type="text"
+                placeholder="KERESÉS"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setPage(1);
+                }}
+                className="relative z-20 w-full h-full pl-5 pr-4 bg-transparent outline-none font-bold text-[11px] tracking-[0.12em] uppercase text-black-dark placeholder:text-black-dark/60"
+              />
             </div>
+
+            {/* Right SVG shape button */}
+            <button
+              type="button"
+              className="relative shrink-0 h-full aspect-square bg-transparent cursor-pointer p-0 m-0 outline-none overflow-visible -ml-px z-20 flex items-center justify-center"
+              aria-label="Keresés"
+            >
+              {/* Background color SVG (fills entire height) */}
+              <svg
+                className="absolute inset-0 w-full h-full overflow-visible"
+                viewBox="0 0 46.81 48"
+                preserveAspectRatio="none"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M44.45,34.4l-4.28-4.27h0S19.62,9.65,19.62,9.65h0s-2.65-2.65-2.65-2.65C12.46,2.52,6.36,0,0,0v48h38.8c7.13,0,10.69-8.58,5.65-13.6Z"
+                  fill="#FFFFFF"
+                />
+              </svg>
+
+              {/* Dark brand border line matching the input border (inset by 1px to align with 2px borders) */}
+              <svg
+                className="absolute left-0 right-0 w-full overflow-visible"
+                viewBox="0 0 46.81 48"
+                preserveAspectRatio="none"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ top: "1px", bottom: "1px", height: "calc(100% - 2px)" }}
+              >
+                <path
+                  d="M44.45,34.4l-4.28-4.27h0S19.62,9.65,19.62,9.65h0s-2.65-2.65-2.65-2.65C12.46,2.52,6.36,0,0,0 M0,48h38.8c7.13,0,10.69-8.58,5.65-13.6"
+                  fill="none"
+                  stroke="#1D1D1E"
+                  strokeWidth="2"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                className="relative z-10 transition-transform duration-300 group-hover:scale-110 text-black-dark mr-4 w-4 h-4 md:w-[20px] md:h-[20px]"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </button>
           </div>
 
           {/* Custom Filter Card */}
@@ -521,7 +567,7 @@ export default function ProductFiltersAndGrid({ products }) {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="bg-transparent border border-white/15 text-white py-2 px-3 rounded-[3px] text-[13px] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors hover:border-white/30"
+              className="bg-transparent border border-white/15 text-black-dark py-2 px-3 rounded-[3px] text-[13px] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors hover:border-white/30"
             >
               ← Előző
             </button>
@@ -531,7 +577,7 @@ export default function ProductFiltersAndGrid({ products }) {
                 onClick={() => setPage(i + 1)}
                 className={`border border-white/15 py-2 px-3.5 rounded-[3px] text-[13px] cursor-pointer transition-all ${page === i + 1
                   ? "bg-accent text-black font-bold"
-                  : "bg-transparent text-white hover:border-white/30"
+                  : "bg-transparent text-black-dark hover:border-white/30"
                   }`}
               >
                 {i + 1}
@@ -540,7 +586,7 @@ export default function ProductFiltersAndGrid({ products }) {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="bg-transparent border border-white/15 text-white py-2 px-3 rounded-[3px] text-[13px] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors hover:border-white/30"
+              className="bg-transparent border border-white/15 text-black-dark py-2 px-3 rounded-[3px] text-[13px] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors hover:border-white/30"
             >
               Következő →
             </button>

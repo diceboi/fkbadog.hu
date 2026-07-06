@@ -15,9 +15,18 @@ function BlockRevealWord({ children, colorClass, textClass, delay }) {
 export default function Hero() {
   const videoRef = useRef(null);
   const sectionRef = useRef(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
     if (videoRef.current) videoRef.current.play().catch(() => {});
+
+    // Fallback timeout: if the video loading stalls or onLoadedData doesn't fire (e.g. under throttling),
+    // force show the video element so it plays when ready/shows poster, preventing infinite loader.
+    const timer = setTimeout(() => {
+      setIsVideoLoaded(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -27,7 +36,10 @@ export default function Hero() {
         className="hero-section relative bg-black flex flex-col rounded-lg overflow-hidden min-h-[calc(100vh-4rem)] w-full"
       >
         {/* Video background – fills entire section, behind the navbar */}
-        <div className="absolute inset-0">
+        <div 
+          className={`absolute inset-0 ${!isVideoLoaded ? "shimmer-placeholder-dark" : ""}`}
+          style={!isVideoLoaded ? { backgroundColor: "#1D1D1E" } : {}}
+        >
           <video
             ref={videoRef}
             src="/hero-background.mp4"
@@ -35,7 +47,10 @@ export default function Hero() {
             muted
             loop
             playsInline
-            className="w-full h-full object-cover opacity-[0.55]"
+            onLoadedData={() => setIsVideoLoaded(true)}
+            className={`w-full h-full object-cover transition-all duration-700 ${
+              isVideoLoaded ? "opacity-[0.55] blur-0" : "opacity-0 blur-md"
+            }`}
           />
           <div
             className="absolute inset-0"

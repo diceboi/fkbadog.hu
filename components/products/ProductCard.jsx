@@ -1,15 +1,38 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { H5, Small, Label, Span } from "@/components/ui/typography";
 import { TbShoppingCartPlus } from "react-icons/tb";
+import BlockRevealWord from "@/components/animations/BlockRevealWord";
 /**
  * Bottom corner shape — extracted from ProductTileBottom.svg
  * viewBox: 0 0 51.92 33.07 — just the diagonal corner element
  */
 
 export default function ProductCard({ product }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -50px 0px" }
+    );
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    return () => observer.disconnect();
+  }, []);
+
+  const shouldAnimate = isLoaded && isInView;
+
   const formatPrice = (p) =>
     p.toLocaleString("hu-HU").replace(/\s/g, " ") + " Ft/" + product.unit;
 
@@ -21,7 +44,10 @@ export default function ProductCard({ product }) {
       href={`/termekek/${product.category}/${product.slug}`}
       className="block no-underline group h-full"
     >
-      <article className="relative transition-transform duration-300 h-full flex flex-col">
+      <article 
+        ref={containerRef}
+        className="relative transition-transform duration-300 h-full flex flex-col"
+      >
         {/* ── Closed card body — full border, all corners rounded ── */}
         <div className="relative z-1 flex-1 bg-white border-2 border-white group-hover:border-black-mid duration-300 rounded-t-lg rounded-br-lg overflow-hidden flex flex-col shadow-lg">
           {/* Badges */}
@@ -62,20 +88,34 @@ export default function ProductCard({ product }) {
           )}
 
           {/* Image */}
-          <div className="z-3 flex items-center justify-center pt-2 flex-1">
+          <div 
+            className={`z-3 flex items-center justify-center pt-2 flex-1 relative min-h-[160px] w-full ${!shouldAnimate ? "shimmer-placeholder" : ""}`}
+            style={!shouldAnimate ? { backgroundColor: "#f2f2eb" } : {}}
+          >
             <Image
               src={product.images[0]}
               alt={product.name}
               width={260}
               height={240}
-              className="object-contain transition-transform duration-500 group-hover:scale-105 px-4 max-h-40 w-auto h-auto"
+              onLoad={() => setIsLoaded(true)}
+              className={`object-contain transition-all duration-300 group-hover:scale-105 px-4 max-h-40 w-auto h-auto ${
+                shouldAnimate ? "opacity-100 blur-0" : "opacity-0 blur-md"
+              }`}
             />
           </div>
 
           {/* Product name + material */}
-          <div className="px-2 py-2">
-            <H5 className="text-black uppercase type-h6 leading-[1] ">
-              {product.name}
+          <div className="px-2 py-2 relative">
+            {!shouldAnimate && (
+              <div 
+                className="absolute inset-x-2 top-2 h-[18px] w-[80%] shimmer-placeholder rounded z-2" 
+                style={{ backgroundColor: "#f2f2eb" }}
+              />
+            )}
+            <H5 className="text-black uppercase type-h6 leading-[1] relative z-1 flex">
+              <BlockRevealWord trigger={shouldAnimate} compact={true} textClass="text-black" colorClass="bg-accent">
+                {product.name}
+              </BlockRevealWord>
             </H5>
 
             {/* SKU */}
