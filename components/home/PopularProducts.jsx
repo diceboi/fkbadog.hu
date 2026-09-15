@@ -3,17 +3,24 @@ import { supabase, mapSupabaseProductToLocal } from "@/lib/supabase";
 import ProductCard from "@/components/products/ProductCard";
 
 export default async function PopularProducts() {
-  // Fetch top 10 products from Supabase
-  const { data: termekek, error } = await supabase
-    .from("termekek")
+  // 1. Próbáljuk lekérdezni az új 'products' táblából az aktív termékeket
+  let { data: productsData, error } = await supabase
+    .from("products")
     .select("*")
+    .eq("aktiv", true)
     .limit(10);
 
-  if (error) {
-    console.error("Hiba a népszerű termékek lekérdezésekor:", error);
+  // 2. Ha az új tábla még nem készült el vagy üres, fallback a régi termekek-re
+  if (error || !productsData || productsData.length === 0) {
+    const { data: oldData } = await supabase
+      .from("termekek")
+      .select("*")
+      .limit(10);
+    productsData = oldData || [];
   }
 
-  const products = (termekek || []).map(mapSupabaseProductToLocal);
+  const products = (productsData || []).map(mapSupabaseProductToLocal).filter(Boolean);
+
 
   return (
     <section className="section bg-cream z-1 pb-20">

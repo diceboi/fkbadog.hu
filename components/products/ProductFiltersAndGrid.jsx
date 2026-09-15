@@ -30,9 +30,34 @@ export default function ProductFiltersAndGrid({ products: initialProducts, kateg
     async function load() {
       setIsLoading(true);
       try {
-        const { supabase, mapSupabaseProductToLocal } = await import("@/lib/supabase");
+        const { supabase, mapSupabaseProductToLocal, slugify } = await import("@/lib/supabase");
         
-        // Dynamically map slug back to db csoport_nev
+        // 1. Elsődlegesen az új 'products' tábla lekérdezése
+        const { data: newProducts, error: newError } = await supabase
+          .from("products")
+          .select("*")
+          .eq("aktiv", true);
+
+        if (!newError && newProducts && newProducts.length > 0) {
+          const mapped = newProducts.map(mapSupabaseProductToLocal);
+          let filtered = mapped;
+          if (kategoria) {
+            filtered = mapped.filter((p) => {
+              if (p.category === kategoria) return true;
+              const fullSlug = slugify(p.categoryName || "");
+              return fullSlug === kategoria || fullSlug.startsWith(kategoria);
+            });
+          }
+
+          if (isMounted) {
+            // Ha van specifikus kategória találat, azt mutatjuk, különben az összes aktív új terméket
+            setProducts(filtered.length > 0 ? filtered : mapped);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        // 2. Vészhelyzeti Fallback: Régi 'termekek' tábla, ha a products migráció még nem futott le
         const { data: catData } = await supabase
           .from("termekek")
           .select("csoport_nev")
@@ -43,19 +68,7 @@ export default function ProductFiltersAndGrid({ products: initialProducts, kateg
         ];
 
         const groupMapping = distinctGroups.reduce((acc, group) => {
-          const slug = group
-            .toLowerCase()
-            .replace(/á/g, "a")
-            .replace(/é/g, "e")
-            .replace(/í/g, "i")
-            .replace(/ó/g, "o")
-            .replace(/ö/g, "o")
-            .replace(/ő/g, "o")
-            .replace(/ú/g, "u")
-            .replace(/ü/g, "u")
-            .replace(/ű/g, "u")
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/(^-|-$)/g, "");
+          const slug = slugify(group);
           acc[slug] = group;
           return acc;
         }, {});
@@ -76,7 +89,7 @@ export default function ProductFiltersAndGrid({ products: initialProducts, kateg
           setIsLoading(false);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Termékek betöltési hiba:", err);
         if (isMounted) setIsLoading(false);
       }
     }

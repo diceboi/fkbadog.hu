@@ -14,20 +14,24 @@ const fallbackImages = [
 ];
 
 export default async function CategoryGrid({ textColor, activeColor }) {
-  // Fetch distinct categories from the database
-  // Note: Since Supabase API doesn't have a direct distinct() method, 
-  // we'll fetch all and filter in JS, or we can just fetch a few known categories.
-  // Let's use RPC if available, or just fetch all and deduplicate.
-  // Actually, since we only have ~904 rows, fetching all is relatively fast for a Server Component,
-  // but selecting just the column is better.
-  const { data, error } = await supabase.from("termekek").select("csoport_nev").limit(1000);
+  // 1. Elsődlegesen az új 'products' tábla kategóriáinak lekérdezése
+  let distinctGroups = [];
+  const { data: newCatData, error: newCatError } = await supabase
+    .from("products")
+    .select("kategoria")
+    .eq("aktiv", true);
 
-  if (error) {
-    console.error("Hiba a kategóriák lekérdezésekor:", error);
+  if (!newCatError && newCatData && newCatData.length > 0) {
+    distinctGroups = [...new Set(newCatData.map((d) => d.kategoria).filter(Boolean))];
+  } else {
+    // 2. Fallback: régi termekek tábla
+    const { data: oldCatData } = await supabase
+      .from("termekek")
+      .select("csoport_nev")
+      .limit(1000);
+    distinctGroups = [...new Set((oldCatData || []).map((d) => d.csoport_nev).filter(Boolean))];
   }
 
-  // Deduplicate and filter empty
-  const distinctGroups = [...new Set((data || []).map(d => d.csoport_nev).filter(Boolean))];
 
   // Create featured list (limit to 10 for grid)
   const featured = distinctGroups.slice(0, 10).map((group, index) => {

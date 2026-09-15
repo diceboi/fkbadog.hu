@@ -14,7 +14,12 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  let product = getProductBySlug(slug);
+  if (!product) {
+    const { supabase, mapSupabaseProductToLocal } = await import("@/lib/supabase");
+    const { data } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
+    if (data) product = mapSupabaseProductToLocal(data);
+  }
   if (!product) return {};
   return {
     title: `${product.name} – FK Tető`,
@@ -24,8 +29,26 @@ export async function generateMetadata({ params }) {
 
 export default async function TermeklaPPage({ params }) {
   const { kategoria, slug } = await params;
-  const product = getProductBySlug(slug);
-  if (!product || product.category !== kategoria) notFound();
+  let product = getProductBySlug(slug);
+
+  if (!product) {
+    const { supabase, mapSupabaseProductToLocal } = await import("@/lib/supabase");
+    let { data } = await supabase.from("products").select("*").eq("slug", slug).maybeSingle();
+    if (!data) {
+      const parts = slug.split("-");
+      const lastPart = parts[parts.length - 1];
+      if (/^\d+$/.test(lastPart)) {
+        const res = await supabase.from("products").select("*").eq("id", parseInt(lastPart, 10)).maybeSingle();
+        data = res.data;
+      }
+    }
+    if (data) {
+      product = mapSupabaseProductToLocal(data);
+    }
+  }
+
+  if (!product) notFound();
+
 
   const cat = getCategoryBySlug(kategoria);
   const related = getRelatedProducts(product, 5);

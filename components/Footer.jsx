@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const footerLinks = {
   "Gyors elérés": [
@@ -16,8 +17,16 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Az adminisztrációs felületen nem jelenítjük meg a footert
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="bg-black-mid relative overflow-hidden pt-28 lg:pt-36 pb-0 z-0">
+
       <div className="container relative overflow-visible pb-16 lg:pb-24">
 
         {/* Main layout */}

@@ -1,13 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Preloader() {
+  const pathname = usePathname();
   const [isFilling, setIsFilling] = useState(false);
   const [isZooming, setIsZooming] = useState(false);
 
   useEffect(() => {
+    if (pathname?.startsWith("/admin")) return;
     // Ha már lefutott, ne csináljunk semmit (az inline script már elrejtette)
     if (sessionStorage.getItem("preloader_run")) return;
+
 
     // Késleltetett indulás a hullámzó folyadékra
     const fillTimer = setTimeout(() => {
@@ -31,6 +35,10 @@ export default function Preloader() {
       clearTimeout(endTimer);
     };
   }, []);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div id="global-preloader" className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
